@@ -1,0 +1,24 @@
+
+body {
+	padding: 24px;
+}
+
+.nav {
+	padding: 0px;
+}
+
+.nav-link {
+	font-weight: bold;
+}
+
+.breadcrumb {
+	border: 1px solid #ddd;
+	background-color: rgba(0,0,0,0.03);
+}
+
+.content {
+	padding: 10px;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}

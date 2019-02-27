@@ -1,0 +1,16 @@
+
+RedirectMatch 404 /\.git*
+
+RewriteEngine On
+
+RewriteBase /
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^([a-z]+)/?$ /index.php?page=$1 [L]
+
+RewriteRule ^play/([0-9]+)/?$ /index.php?page=play&course=$1 [L]
+RewriteRule ^play/([0-9]+)/([0-9]+)/?$ /index.php?page=play&course=$1&hole=$2 [L]
+
+RewriteRule ^account/([a-z]+)/?$ /index.php?page=account&action=$1 [L]
