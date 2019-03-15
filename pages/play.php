@@ -23,6 +23,7 @@ if(!isset($_GET["course"])) {
 			</div>
 		</div>
 		<?php } ?>
+<!--
 		<div class="card" style="width: 400;">
 			<img class="card-img-top" src="/images/comingsoon.png">
 			<div class="card-body">
@@ -30,6 +31,7 @@ if(!isset($_GET["course"])) {
 				<p class="card-text">Coming soon...<br><br><br></p>
 			</div>
 		</div>
+-->
 	</div>
 	<?php
 
@@ -43,10 +45,10 @@ if(!isset($_GET["course"])) {
 	for($i=1; $i<=18; $i++)
 		$par[$i] = par($_GET["course"], $i);
 
-	$sql = $db->prepare("SELECT language, description FROM courses WHERE id=?;");
+	$sql = $db->prepare("SELECT language, description, syntax FROM courses WHERE id=?;");
 	$sql->bind_param("i", $_GET["course"]);
 	$sql->execute();
-	$sql->bind_result($language, $description);
+	$sql->bind_result($language, $description, $syntax);
 	$sql->fetch();
 	$sql->close();
 
@@ -158,7 +160,7 @@ if(!isset($_GET["course"])) {
 						<script>
 							var editor = ace.edit("editor");
 							editor.setTheme("ace/theme/textmate");
-							editor.getSession().setMode("ace/mode/assembly_x86");
+							editor.getSession().setMode("ace/mode/<?php echo $syntax; ?>");
 							<?php if(isset($_POST["submit"])) { ?>editor.setValue(atob("<?php echo base64_encode($_POST["code"]); ?>"));<?php } ?>
 						</script>
 						<input type="hidden" id="code" name="code" value="">
