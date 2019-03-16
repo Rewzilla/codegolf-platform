@@ -156,7 +156,7 @@ if(!isset($_GET["course"])) {
 				<form action="/play/<?php echo $course; ?>/<?php echo $number; ?>" method="POST" onsubmit="document.getElementById('code').value = editor.getValue()">
 					<div class="form-group">
 						<div class="card card-body editor" id="editor" style="position: relative; height: 400px; width: 100%;"></div>
-						<script src="/js/ace/src/ace.js" type="text/javascript" charset="utf-8"></script>
+						<script src="<?php echo $ace_url; ?>" type="text/javascript" charset="utf-8"></script>
 						<script>
 							var editor = ace.edit("editor");
 							editor.setTheme("ace/theme/textmate");

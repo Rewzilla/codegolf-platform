@@ -29,3 +29,5 @@ $tmp_dir = "/dev/shm";
 
 $recaptcha_secret = "CHANGEME";
 $recaptcha_sitekey = "CHANGEME";
+
+$ace_url = "https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.3/ace.js";
