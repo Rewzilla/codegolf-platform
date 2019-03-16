@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <unistd.h>
+#include <grp.h>
 
 #define SU_UID 1000
 #define SU_GID 1000
@@ -8,13 +9,12 @@
 
 int main(int argc, char *argv[]) {
 
-//	printf("Executing %s\n", argv[1]);
+	chroot(getenv("PWD"));
 
-	setgroups(0);
+	setgroups(0, 0);
+
 	setgid(SU_GID);
 	setuid(SU_UID);
-
-//	chroot(getenv("PWD"));
 
 	execl("/usr/bin/timeout", "/usr/bin/timeout", "-s", "SIGKILL", TIMEOUT, argv[1], NULL);
 

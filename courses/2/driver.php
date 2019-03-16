@@ -13,7 +13,7 @@ function testcase($hole, $code) {
 
 	$c_file = $tmp_dir . "/" . $name . ".c";
 	$e_file = $tmp_dir . "/" . $name;
-	$seccomp = dirname(__FILE__) . "/seccomp.c";
+	$seccomp = dirname(__FILE__) . "/seccomp.whitelist.c";
 
 	file_put_contents($c_file, $code);
 
