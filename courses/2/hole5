@@ -1,0 +1,4 @@
+This time read in a string and print it back out in reverse
+Example:
+	Input: "This is a String"
+	Output: "gnirtS a si sihT"

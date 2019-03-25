@@ -1,0 +1,7 @@
+Given two numbers find the greatest common divisor between the two of them
+Example 1:
+	Input: 512 513
+	Output: 1
+Example 2:
+	Input: 246 888
+	Output: 6

@@ -1,0 +1,5 @@
+Given an array of numbers sort the numbers and return them back
+Example:
+	Input: 8 9 6 5 7 2 3 8 26 9 30 8
+
+	Output: 2 3 5 6 7 8 8 8 9 9 26 30

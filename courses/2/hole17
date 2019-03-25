@@ -1,0 +1,18 @@
+Everyone should know the game minesweeper, so given a matrix of bombs and safe spaces print back the corresponding values for each location. A 0 stands for no bomb and a 1 stands for a bomb.
+Example 1: 
+	Input:  0 1 0
+	        1 0 1
+		0 1 0
+		1 0 1
+
+	Output: 2 2 2
+		2 4 2
+		3 4 3
+		1 3 1
+
+Example 2:
+	Input:  0 0 0
+	        1 1 1
+
+	Output: 2 3 2
+		1 2 1

@@ -1,16 +1,91 @@
 <?php
 
+
 if(!defined("IN_MAIN") || !logged_in())
 	die("Access Denied");
 
-function testcase($hole, $code) {
+function validate($string){
+	
+	if(is_numeric($string))
+		return 0;
+	else if($string[1] == 'b')
+		return 2;
+	else if($string[1] == 'x')
+		return 3;
+	return 1;
+
+}
+
+function testcase($hole, $code, $input, $registers, $type) {
 
 	global $tmp_dir;
-
+	
 	$name = md5($code);
 
 	$asm_file = $tmp_dir . "/" . $name . ".s";
 	$bin_file = $tmp_dir . "/" . $name . ".bin";
+	$c_file = $tmp_dir . "/" . $name;
+
+	if($hole == 0){
+		include("template.php");
+		$template = explode("setup() {", $template);
+		$final = $template[0] . "setup() {\n";	
+		$_SESSION["input"]=$input;
+		$_SESSION["registers"]=$registers;
+		$_SESSION["type"]=$type;
+		
+		foreach($registers as $register => $string){
+
+			switch(validate($string)){
+				case 0:
+					$value = strval($string);
+					break;
+				case 2:
+					$value = bindec($string);
+					break;
+				case 3:
+					$value = hexdec($string);
+					break;
+				case 1:
+					$value = 0;
+					$_SESSION["type"][$register]=0;
+			}
+
+			$final .= $register . " = " . $value  . ";\n";
+		}
+		if(isset($input) && $input != "")#check for int or string
+			
+			if($type == NULL){ #int creates an int * then sets mem
+				$tmp = explode(",",$input);
+				$counter = 0;
+
+				foreach($tmp as $word)	
+					$counter += validate($word);
+
+				if(!$counter)
+					$final .= "int array[ ] = {" . $input . "};\nmemcpy(mem, array, " . strval(substr_count($input, ",") + 1) * 4 . ");";
+				else
+					$_SESSION["input"] = "";
+
+			}else {#string
+				$array = str_split($input,1);
+				$blacklist = " ;\"'(){}[]<>?:`~\\|/";#blacklist characters not allowed in strings
+				$tester = 1;
+
+				foreach($array as $chars)
+
+					if(strpos($blacklist, $chars))
+						$tester = 0;
+
+				if($tester)
+					$final .= "memcpy(mem, \"" . $input . "\", " . strlen($input) . ");\n";
+				else
+					$_SESSION["input"] = "";
+			}
+		$final .= $template[1];
+		file_put_contents($c_file . ".c", $final);
+		shell_exec("gcc -lpthread -lunicorn -o " . $c_file . " " . $c_file . ".c /var/www/html/courses/1/hole.c");		
+	}
 
 	$code =
 		"bits 32\n" .
@@ -19,24 +94,37 @@ function testcase($hole, $code) {
 
 	file_put_contents($asm_file, $code);
 
-	$output = shell_exec("nasm -f bin -o " . $bin_file . " " . $asm_file . " 2>&1");
+	for($x = 0; $x<5;$x++){
+		$output = shell_exec("nasm -f bin -o " . $bin_file . " " . $asm_file . " 2>&1");
+	
+		if(!empty($output)) {
+		
+			$output = str_replace($asm_file, "/path/to/code.s", $output);
+			$ret = "fail";
+			$size = "inf";
 
-	if(!empty($output)) {
+		} else if($hole==0){
+				
+			$output = shell_exec("objdump -D -b binary -Mintel,i386 -mi386 " . $bin_file . " | grep -P '[0-9a-f]+:\\t' | head -n -1") . "\n\n" ;
+			$ret = "pass";
+			$output .= str_replace(",", "\n", exec($c_file . " " . $bin_file));
+			$size = filesize($bin_file) - 1;
 
-		$output = str_replace($asm_file, "/path/to/code.s", $output);
-		$ret = "fail";
-		$size = "inf";
+		} else {
 
-	} else {
+			$output = shell_exec("objdump -D -b binary -Mintel,i386 -mi386 " . $bin_file . " | grep -P '[0-9a-f]+:\\t' | head -n -1");
+			$ret = exec("./courses/1/hole" . $hole . " " . $bin_file);
+			$size = filesize($bin_file) - 1;
 
-		$output = shell_exec("objdump -D -b binary -Mintel,i386 -mi386 " . $bin_file . " | grep -P '[0-9a-f]+:\\t' | head -n -1");
-		$ret = exec("./courses/1/hole" . $hole . " " . $bin_file);
-		$size = filesize($bin_file) - 1;
-
+		}
+		if($ret=="fail" || $hole == 18 || $hole == 0)
+			break;
 	}
 
 	@unlink($asm_file);
 	@unlink($bin_file);
+	@unlink($c_file);
+	@unlink($c_file . ".c");
 
 	return array(
 		"valid" => $ret == "pass",
