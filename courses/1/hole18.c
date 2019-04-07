@@ -30,7 +30,6 @@ struct nodes* createnode(){
 }
 
 void creategraph(){
-	srand(time(0));
 	list = malloc(num*sizeof(struct nodes*));
 	for(int i = 0; i < num;i++){
 		list[i] = createnode();

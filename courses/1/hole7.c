@@ -23,7 +23,6 @@ int min;
 void setup() {
 //eax points to a 3d array with the size x, y, and z stored in ebx, ecx, and edx respectively. find the total, maximum, and minimum and store them in eax, ebx, and ecx, again respectively.
 	
-	srand(time(0));
 	int x = rand() % 90 + 10; // 10-100
 	int y = rand() % 90 + 10; 
 	int z = rand() % 90 + 10;

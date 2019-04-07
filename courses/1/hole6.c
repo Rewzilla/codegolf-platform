@@ -34,7 +34,6 @@ bool checkboard( int x, int y){
 
 void createboard(){
 	
-	srand(time(0));
 	for(int i = 0; i < 9; i++)
 		board[i] = ' ';
 	int x, y;

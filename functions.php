@@ -67,69 +67,6 @@ function user_exists($username) {
 
 }
 
-function insecretleaderboard($user,$course){
-
-	global $db;
-
-	$sql = $db->prepare("SELECT * FROM secret WHERE userid=? AND course=?");
-	$sql->bind_param("ii",$user,$course);
-	$sql->execute();
-	$sql->store_result();
-
-	return $sql->num_rows > 0;
-
-}
-
-function addsecretleaderboard($user,$course){
-
-	global $db;
-
-	$sql = $db->prepare("INSERT INTO secret(userid, course) VALUES(?,?);");
-	$sql->bind_param("ii",$user,$course);
-	$sql->execute();
-	
-	$sql->close();
-}
-
-function secretleaderboard($course){
-	
-	global $db;
-
-	$sql = $db->prepare("SELECT username, time FROM secret JOIN users on users.id=secret.userid WHERE course=? order by time;");
-	$sql->bind_param("i",$course);
-	$sql->execute();
-	$sql->bind_result($user, $time);
-
-	$ret = array();
-
-	while($sql->fetch())
-		$ret[] = array(
-			"username" => $user,
-			"timestamp" => $time
-	);
-
-	$sql->close();
-
-	return $ret;
-
-}
-
-function n($course, $user) {
-
-	global $db;
-	$count = 0;
-
-	$sql = $db->prepare("SELECT COUNT(*) FROM (SELECT solves.hole FROM solves WHERE solves.score='1337' AND solves.course=? AND solves.user=? GROUP BY hole) tmp;");
-	$sql->bind_param("ii", $course, $user);
-	$sql->execute();
-	$sql->bind_result($count);
-	$sql->fetch();
-
-	$sql->close();
-
-	return $count;
-}
-
 function create_user($username, $password, $email) {
 
 	global $db, $hash_algo;

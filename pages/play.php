@@ -29,40 +29,8 @@ if(!isset($_GET["course"])) {
 	$sql->close();
 	$_SESSION=array("username"=>$_SESSION["username"]);
 
-} else if(isset($_GET["hole"]) && $_GET["hole"]==1337 && n($_GET["course"], $user = get_userid()) == 18){
-
-	echo '<script>document.body.style.backgroundImage="url(\'/images/secret.jpg\')";</script>';
-	$course = $_GET["course"];
-
-	if(!insecretleaderboard($user, $course))
-		addsecretleaderboard($user,$course);
-
-	$list = secretleaderboard($course);
-
-	?>
-
-	<div class="row" style="background-color:white; margin:0 5px;">
-
-		<div class="col-lg" style="clear:both;" >
-			<h1> Congratulations!!</h1><h2>On sucking this much at code golf. Anyways here is a secret page only a handful will ever find. You now have the chance to view upon your name on this leaderboard, but alas this page is only for this course, guess you need to get your name on the other leaderboards as well. Anyways have fun!!
-			</h2>
-		</div>
-		<br>
-		<div class="col-lg" style = "clear: both;float:left;">
-			<h5>Leaderboard</h5>
-			<table class="table table-bordered table-striped">
-				<tr><th>Username</th><th>Timestamp</th></tr>
-				<?php foreach($list as $line) { ?>
-					<tr><td><?php echo htmlentities($line["username"]); ?></td><td><?php echo $line["timestamp"]; ?></td></tr>
-				<?php } ?>
-			</table>
-			<br>
-		</div>
-			
-	</div>
-	<?php
-
 } else {
+
 	if(isset($_SESSION["scores"][$_GET["course"]])){
 		$scores=$_SESSION["scores"][$_GET["course"]];
 		$par = $_SESSION["par"][$_GET["course"]];
@@ -159,7 +127,7 @@ if(!isset($_GET["course"])) {
 						
 						Success! Code was <?php echo $ret["size"]; ?> bytes.<br>
 						<hr >
-						<pre><?php if($ret["size"] == 1337){ echo "With all these hacker skills and thats the best score you get. Not very 1337 of you: " . $n=n($course,$userid); if($n==18 && $number==18)header("Location: /play/" . $course . "/1337"); die(); }  echo htmlspecialchars($ret["output"]); ?></pre>
+						<pre><?php echo htmlspecialchars($ret["output"]);?></pre>
 					
 						<button class="nexthole" onclick="window.location.href = '/play/<?php echo ($number == 18?"":$course . "/" . strval($number+1)); ?>';";><?php echo ($number == 18?"Back to Courses":"Next Hole"); ?></button>
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -188,18 +156,20 @@ if(!isset($_GET["course"])) {
 				<form id="post" action="/play/<?php echo $course; ?>/<?php echo $number; ?>" method="POST" onsubmit="document.getElementById('code').value = editor.getValue();">
 		<div class="row">
 				<div style="width:100%;padding:0 15px;">
-				<?php if($number == 0 && $course == 1){#pretty ugly but it seems to do its job
-					$registers = array("eax","ebx","ecx","edx","esi","edi","ebp","esp"); ?>
-					<table class="table table-striped"><tr>
+					<?php if($number == 0 && $course == 1){#pretty ugly but it seems to do its job
+						$registers = array("eax","ebx","ecx","edx","esi","edi","ebp","esp"); ?>
+						<table class="table table-striped"><tr>
 
-					<?php for($x = 0; $x < 6; $x++){
-						if(!($x%2) && $x != 0){
-							echo "</tr><tr>";
-						}
-							echo "<td style=\"text-align:center;\">" . $registers[$x] . " " . "<input value=\"" . (isset($_SESSION["registers"])?$_SESSION["registers"][$registers[$x]]:0) . "\" name=\"registers[" . $registers[$x] . "]\"> </td>";
-					}
+							<?php for($x = 0; $x < 6; $x++){
+
+								if(!($x%2) && $x != 0){
+									echo "</tr><tr>";
+								}
+									echo "<td style=\"text-align:center;\">" . $registers[$x] . " " . "<input value=\"" . (isset($_SESSION["registers"])?$_SESSION["registers"][$registers[$x]]:0) . "\" name=\"registers[" . $registers[$x] . "]\"> </td>";
+							}
 					}?>
-					</tr></table>
+							</tr>
+						</table>
 				</div>
 		<div class="col-lg">
 								
@@ -219,20 +189,21 @@ if(!isset($_GET["course"])) {
 						<?php
 							if($number == 0){
 								echo '<div style="float:right;display:flex;">';
-								if($course == 1)#I'm not going to even try to pretend that I understand what happened with the session type variable but it works
-									echo '<div class="onoffswitch style="float:left;"><input type=checkbox name="type" class="onoffswitch-checkbox" id="myonoffswitch" value="1" ' . (isset($_SESSION["type"])&&isset($_SESSION["type"])=='1'?"checked":"") . ' >
+								if($course == 1)
+									echo '<div class="onoffswitch style="float:left;">
+										<input type=checkbox name="type" class="onoffswitch-checkbox" id="myonoffswitch" value="1" ' . (isset($_SESSION["type"])&&isset($_SESSION["type"])=='1'?"checked":"") . ' >
 										<label class="onoffswitch-label" for="myonoffswitch">
 											<span class="onoffswitch-inner"></span>
 										</label></div>';	
-		echo '<div style="float:right;margin-left:10px;">
-			Input: <input value="'. (isset($_SESSION['input'])?$_SESSION['input']:"") . '" name="input" margin-left:5px;" >
+								echo '<div style="float:right;margin-left:10px;">
+									Input: <input value="'. (isset($_SESSION['input'])?$_SESSION['input']:"") . '" name="input" margin-left:5px;" >
 								</div>
 								</div>';
 							}	
 						?>
 					<input type="submit" class="btn btn-primary" name="submit[]" value="Run">
 			</div>
-			<div class="col-md-4">
+			<div class="col-lg-4">
 				<h5>Description</h5>
 				<div class="card card-body">
 					<?php echo $description; ?>
@@ -256,9 +227,6 @@ if(!isset($_GET["course"])) {
 		
 		<?php
 			if($number != 0){
-		
-				
-
 		?>
 
 		<div class="row">
@@ -278,7 +246,5 @@ if(!isset($_GET["course"])) {
 		
 		<?php
 		}
-
 	}
-
 }

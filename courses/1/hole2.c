@@ -21,7 +21,6 @@ int total, max, min;
 
 void setup() {
 	
-	srand(time(0));
 	eax = 0x00600000;
 	ebx = rand()%80 + 20;//20-100
 	
@@ -38,7 +37,7 @@ void setup() {
 			max = tmp;
 		if(tmp < min)
 			min = tmp;
-
+		printf("%c", arr[i]);
 	}
 	memcpy(mem, arr, ebx * sizeof(int));
 
