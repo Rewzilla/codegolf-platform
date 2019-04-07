@@ -2,7 +2,7 @@ Delete from holes where course = '2';
 
 insert into holes(course,number,description) values('2','0',"Driving Range: <br>Welcome to the c driving range here you are able to test your creative solutions, as long as the program is syntatically correct it should run and return the size. You are also able to send in a string through stdin with the input box below. Have Fun!");
 
-INSERT INTO holes(course,number,description) VALUES('2','1',"Welcome to the first hole in the c course, to get you started here are a couple pointers: every input has an ending newline, every output must also have an ending newline, newlines are worth two characters, and tabs are worth 4. Otherwise pretty much anything goes for your solution, so Good Luck! Now for your first challenge try to get used to the system by printing \"Hello World!\"");
+INSERT INTO holes(course,number,description) VALUES('2','1',"Welcome to the first hole in the c course, to get you started here are a couple pointers: every input has an ending newline, every output must also have an ending newline. Otherwise pretty much anything goes for your solution, so Good Luck! Now for your first challenge try to get used to the system by printing \"Hello World!\"");
 
 INSERT INTO holes(course,number,description) VALUES('2','2',"Congrats now that you understand what you are doing try to solve this one. Given an int, x, print out the sum of all the numbers between 0 and x, inclusive. <br>Example: <br>&emsp;&emsp;Input: 10<br>&emsp;&emsp;Output: 55");
 

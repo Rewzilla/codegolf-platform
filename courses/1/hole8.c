@@ -61,7 +61,6 @@ void base32encode(){//homemade base32 encode
 }
 
 void setup() {//eax points to a string your job is to base32 encode it and store it in the location pointed to by ebx, then move into eax the strings final location. (standard base32 characters apply A-Z2-7=)
-	srand(time(0));
 
 	int size = rand()%25+25;
 	string1 = malloc(size+1);

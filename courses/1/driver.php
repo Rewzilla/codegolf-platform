@@ -94,11 +94,10 @@ function testcase($hole, $code, $input, $registers, $type) {
 
 	file_put_contents($asm_file, $code);
 
-	for($x = 0; $x<5;$x++){
+	for($x = 0; $x<10;$x++){
 		$output = shell_exec("nasm -f bin -o " . $bin_file . " " . $asm_file . " 2>&1");
 	
 		if(!empty($output)) {
-		
 			$output = str_replace($asm_file, "/path/to/code.s", $output);
 			$ret = "fail";
 			$size = "inf";
@@ -115,9 +114,8 @@ function testcase($hole, $code, $input, $registers, $type) {
 			$output = shell_exec("objdump -D -b binary -Mintel,i386 -mi386 " . $bin_file . " | grep -P '[0-9a-f]+:\\t' | head -n -1");
 			$ret = exec("./courses/1/hole" . $hole . " " . $bin_file);
 			$size = filesize($bin_file) - 1;
-
 		}
-		if($ret=="fail" || $hole == 18 || $hole == 0)
+		if($ret=="fail" && ($hole != 2 && $hole != 3 && $hole != 4 && $hole != 6 && $hole != 7 && $hole != 14))
 			break;
 	}
 

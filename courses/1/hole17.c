@@ -57,7 +57,6 @@ void createeverything(){
 	head->val = 0;//only number I found to be palindromic for everything.
 	hex = bin = magic = dec = 1;
 	struct list * tmp = head;
-	srand(time(0));
 	int ran = rand()%75+25;
 	int test;
 	while(ran--){

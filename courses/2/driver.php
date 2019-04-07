@@ -61,12 +61,8 @@ function testcase($hole, $code, $input) {
 				$output = "Program took too long to run.";
 				$ret = "fail";
 				$size = "inf";
-			} else if($io["output"] == NULL){
-				$output = $result;
-				$ret = "pass";
-				$size = filesize($c_file);
-			} else if($result != $io["output"]) {
-				$output = "Incorrect solution. Failed on attempt: " . $x  . "\nExpected: \n\"" . $io["output"] . "\"\n" . "Got: \n\"" . $result . "\"";
+			} else if($result != $io["output"]){
+				$output = "Incorrect Solution.";
 				$ret = "fail";
 				$size = "inf";
 			} else {

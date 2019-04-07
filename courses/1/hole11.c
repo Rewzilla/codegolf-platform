@@ -55,7 +55,6 @@ void creatematrix(int x,int y){
 void setup() {
 //from a request your goal is to create a spiral matrix x*x, eax holds a pointer to the address to store the final matrix and ebx will hold x. The first number should go in the bottom right of the matrix and then continue clockwise
 
-	srand(time(0));
 	eax = 0x600000;
 	ebx = rand() % 15 + 5;
 	size = ebx*ebx;

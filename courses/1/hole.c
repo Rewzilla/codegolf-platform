@@ -12,9 +12,11 @@ extern uc_err err;
 
 int main(int argc, char *argv[]) {
 
-	FILE *fp;				// File containing x86 bytes
+	FILE *fp, *rp;				// File containing x86 bytes
 	size_t sz;				// Size of the file
 	unsigned char *code;	// Pointer to the code in memory
+	char sran[4];
+	int sr;
 
 	// Ensure we got exactly two command line arguments
 	if(argc != 2)
@@ -43,6 +45,19 @@ int main(int argc, char *argv[]) {
 	err = uc_open(UC_ARCH_X86, UC_MODE_32, &uc);
 	if(err != UC_ERR_OK)
 		return -1;
+
+	//seed the rand
+	rp = fopen("/dev/urandom", "r");
+	if(!rp)
+		srand(time(0));
+	else{
+		//read(rp, sran, 4);
+		sr = fgetc(rp);
+		sr += fgetc(rp) << 8;
+		sr += fgetc(rp) << 16;
+		sr += fgetc(rp) << 24;
+		srand(sr);
+	}
 
 	// Setup the environment
 	setup();
