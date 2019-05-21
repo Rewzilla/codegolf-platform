@@ -1,4 +1,5 @@
 
+
 body {
 	padding: 24px;
 }
@@ -71,3 +72,54 @@ body {
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
     margin-left: 0;
 }
+
+.text{
+	text-align:center;
+	margin-top=0;
+}
+#leaderboard > div > h5 {
+	float:left;
+	margin-right:15px;
+	background-color:lightblue;
+	border: solid black 2px;
+	border-bottom: solid black 0px;
+	padding:1rem 1rem .25rem 1rem;
+	border-radius:8px 8px 0 0;
+	margin-bottom:0;
+}
+
+#leaderboard > div > h5:hover {
+	padding: 1rem;
+
+}
+
+#leaderboard > div{
+	height: 3rem;
+	display:flex;
+	align-items:flex-end;
+}
+
+#leaderboard > div > h5.current, #leaderboard > div > h5.current:hover{
+	background-color:#007bff;
+	color:white;
+	padding:1rem 1rem .5rem 1rem;
+		
+}
+
+.solved {
+	background-color:lightgreen;
+}
+
+.notyet{
+	font-size:0;
+}
+
+.congrats{
+	background-color:#ffff80 !important;
+	font-weight:bold;
+}
+
+tr.congrats > td {
+	background-color:#ffff80 !important;
+}
+

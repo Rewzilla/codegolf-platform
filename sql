@@ -40,11 +40,10 @@ INSERT INTO holes(course,number,description) VALUES('2','18',"Elcomeway otay eth
 
 INSERT INTO holes(course, number, description) VALUES('1','0',"Driving Range: <br>This is the driving range for the x86 course, here you can come in and test your skills or just figure out what works and what does not. As long as the code is valid it will run and be scored. You also have the ability to set the starting values in registers as well as send in a starting char/int array. The register can be input with any decimal, hex, or binary value, you must have the values correctly formated if they are hex or binary. Such as, having '0x' for hex and '0b' for binary. For an int array only decimal values are allowed and must be comma seperated. The array is stored at memory address 0x600000.");
 
-
-
-CREATE TABLE secret (
-userid int(11) NOT NULL, 
-course int(11) NOT NULL, 
-time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-PRIMARY KEY(userid,course)
-)ENGINE=InnoDB CHARSET=utf8mb4;
+CREATE TABLE `challenges` (
+  `hole` int(11) NOT NULL,
+  `user` int(11) NOT NULL,
+  `value` int(11) DEFAULT NULL,
+  `course` int(11) NOT NULL,
+  PRIMARY KEY ('hole','user','course')
+) ENGINE=InnoDB AUTO_INCREMENT=592 DEFAULT CHARSET=utf8mb4;
