@@ -39,3 +39,11 @@ INSERT INTO holes(course,number,description) VALUES('2','17',"Now that the tough
 INSERT INTO holes(course,number,description) VALUES('2','18',"Elcomeway otay ethay inalfay olehay inyay isthay oursecay. Welcome to the final hole in this course. I can't say that I am surprised that you made it this far, but this challenge is weird. Given a string convert the string to pig latin. Here are the rules:<br>&emsp;1. Words beginning with consonants, take all the consonants before the first vowel, move them to the end of the word, and add 'ay'. (latin -> atinlay)<br>&emsp;2. If a word begins in a vowel, y included, add 'yay' to the end. (example -> exampleyay)<br>Don't worry about capital letters, I made it a little bit easier for you.<br><br>Example: <br>&emsp;&emsp;Input: convert this sentence to latin of the pigs<br>&emsp;&emsp;Output: onvertcay isthay entencesay otay atinlay ofyay ethay igspay");
 
 INSERT INTO holes(course, number, description) VALUES('1','0',"Driving Range: <br>This is the driving range for the x86 course, here you can come in and test your skills or just figure out what works and what does not. As long as the code is valid it will run and be scored. You also have the ability to set the starting values in registers as well as send in a starting char/int array. The register can be input with any decimal, hex, or binary value, you must have the values correctly formated if they are hex or binary. Such as, having '0x' for hex and '0b' for binary. For an int array only decimal values are allowed and must be comma seperated. The array is stored at memory address 0x600000.");
+
+CREATE TABLE `challenges` (
+  `hole` int(11) NOT NULL,
+  `user` int(11) NOT NULL,
+  `value` int(11) DEFAULT NULL,
+  `course` int(11) NOT NULL,
+  PRIMARY KEY ('hole','user','course')
+) ENGINE=InnoDB AUTO_INCREMENT=592 DEFAULT CHARSET=utf8mb4;

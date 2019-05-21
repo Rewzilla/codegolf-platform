@@ -95,6 +95,11 @@ if(!isset($_GET["action"])) {
 				$sql->execute();
 				$sql->close();
 
+				$sql = $db->prepare("DELETE FROM challenges WHERE user=?;");
+				$sql->bind_param("i", $userid);
+				$sql->execute();
+				$sql->close();
+
 				redirect("logout");
 
 			}

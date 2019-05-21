@@ -89,45 +89,51 @@ function testcase($hole, $code, $input, $registers, $type) {
 
 	$code =
 		"bits 32\n" .
-		$code . "\n" .
-		"hlt";
+		$code . "\n";
 
 	file_put_contents($asm_file, $code);
 
 	for($x = 0; $x<10;$x++){
+
 		$output = shell_exec("nasm -f bin -o " . $bin_file . " " . $asm_file . " 2>&1");
-	
+
 		if(!empty($output)) {
 			$output = str_replace($asm_file, "/path/to/code.s", $output);
 			$ret = "fail";
 			$size = "inf";
 
-		} else if($hole==0){
-				
-			$output = shell_exec("objdump -D -b binary -Mintel,i386 -mi386 " . $bin_file . " | grep -P '[0-9a-f]+:\\t' | head -n -1") . "\n\n" ;
+		} else if($hole==0){	
+			$output = shell_exec("objdump -D -b binary -Mintel,i386 -mi386 " . $bin_file . " | grep -P '[0-9a-f]+:\\t'") . "\n";
 			$ret = "pass";
 			$output .= str_replace(",", "\n", exec($c_file . " " . $bin_file));
-			$size = filesize($bin_file) - 1;
+			$size = filesize($bin_file);
 
 		} else {
-
-			$output = shell_exec("objdump -D -b binary -Mintel,i386 -mi386 " . $bin_file . " | grep -P '[0-9a-f]+:\\t' | head -n -1");
+			$output = shell_exec("objdump -D -b binary -Mintel,i386 -mi386 " . $bin_file . " | grep -P '[0-9a-f]+:\\t'");
 			$ret = exec("./courses/1/hole" . $hole . " " . $bin_file);
-			$size = filesize($bin_file) - 1;
+			
+			$size = filesize($bin_file);
 		}
-		if($ret=="fail" && ($hole != 2 && $hole != 3 && $hole != 4 && $hole != 6 && $hole != 7 && $hole != 14))
+
+		if($ret=="fail" || ($hole != 2 && $hole != 3 && $hole != 4 && $hole != 6 && $hole != 7 && $hole != 14))
 			break;
+
 	}
+
 
 	@unlink($asm_file);
 	@unlink($bin_file);
-	@unlink($c_file);
-	@unlink($c_file . ".c");
+
+	if($hole == 0){
+		@unlink($c_file);
+		@unlink($c_file . ".c");
+	}
 
 	return array(
-		"valid" => $ret == "pass",
+		"valid" => $ret != "fail",
 		"size" => $size,
 		"output" => $output,
+		"challenges" => $ret
 	);
 
 }

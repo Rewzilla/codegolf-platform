@@ -45,9 +45,13 @@ function testcase($hole, $code, $input) {
 				$_SESSION["input"]=$input;
 				$io["input"]=$input;
 			}
+
 			fwrite($pipes[0], $io["input"]);
 			fclose($pipes[0]);
 			$result = stream_get_contents($pipes[1]);
+
+			if($hole == 0)
+				$io["output"] = $result;
 			$err = stream_get_contents($pipes[2]);
 			fclose($pipes[1]);
 			fclose($pipes[2]);
@@ -67,10 +71,14 @@ function testcase($hole, $code, $input) {
 				$size = "inf";
 			} else {
 				$output = "";
+
+				if($hole == 0)
+					$output = "Output recieved: " . $result;
+				
 				$ret = "pass";
 				$size = filesize($c_file);
 			}
-			if($output != "")
+			if($output != "" || $hole == 0)
 				break;
 		}
 

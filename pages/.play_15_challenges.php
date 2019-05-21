@@ -75,10 +75,10 @@ if(!isset($_GET["course"])) {
 				<th>Par</th>
 				<th>My Best</th>
 				<?php if($_GET["course"] == 1 && count($scores) == 18){ ?>
-				<th title="Each hole has 1 challenge with the same challenge being grouped for every three holes. The challenge is a secret; you will be given a hint if you hover over the challenge keyword in the leaderboard, Good Luck!">Challenges</th>
+				<th>Challenges</th>
 				<?php }?>
 			</tr>
-			<?php $counter = count($scores)+5; while($sql->fetch()&&$counter--) { ?>
+			<?php $counter = count($scores)+4; while($sql->fetch()) { ?>
 				<tr <?php  if(isset($scores[$number]) && $scores[$number]<$par[$number] )echo 'style="background:lightgreen;";'?>>
 					<td><a href="/play/<?php echo $course; ?>/<?php echo $number; ?>">Hole <?php echo $number; ?> </a></td>
 					<td><?php echo strlen($description) > 80 ? substr($description, 0, 80) . "..." : $description; ?></td>
@@ -86,7 +86,7 @@ if(!isset($_GET["course"])) {
 					<td><?php echo $scores[$number] ?? " "; ?></td>
 					<?php if($course == 1 && count($scores) == 18) { ?>
 						<td>
-							<?php if($number > 0) echo substr_count(decbin((isset($challenges[$number])?$challenges[$number]:0)), '1') . " / 1"; ?>
+							<?php if($number > 0) echo substr_count(decbin($challenges[$number]), '1') . " / 15"; ?>
 						</td>
 					<?php } ?>
 				</tr>
@@ -135,7 +135,7 @@ if(!isset($_GET["course"])) {
 
 					if(count($_SESSION["scores"][$course]) == 18 && $course == 1 && $completed != 18){ ?>
 							<script>
-								alert("Congrats!!! You have completed all 18 holes, but your next challenge awaits. Go back to the course page to load them in and hover over the Challenges tab for a description.");
+								alert("Congrats!!! You have completed all 18 holes, hopefully your scores are good as well, but your next challenge awaits. Go back to the course page to load them in.");
 
 							</script>
 					<?php }
@@ -266,29 +266,91 @@ if(!isset($_GET["course"])) {
 				<div>
 					<h5 class="current" id="Leaderboard">Leaderboard</h5>
 					<?php if($course == 1 && $completed == 18){ ?>
+					<h5 id="Challenge1">Challenges 1</h5>
+					<h5 id="Challenge2">Challenges 2</h5>
+					<h5 id="Challenge3">Challenges 3</h5>
 					<?php }?>
 				</div>
 				<table class="table table-bordered table-striped text" id="table1">
 					<tr>
 						<th>Username</th>
 						<th>Score</th>
-						<?php if($course == 1 && $completed == 18){ ?>
-							<th id="Challenges">Challenges</th>
-						<?php } ?>
 						<th>Timestamp</th>
-						
 					</tr>
 					<?php foreach($list as $line) { ?>
 					<tr>
 							<td><?php echo htmlentities($line["username"]); ?></td>
 							<td><?php if(isset($_SESSION['scores'][$course][$number]))echo $line["score"]; else echo "Hidden" ?></td>
-							<?php if($course == 1 && $completed == 18){ 
-								echo "<td>" . (isset($line["challenge"]) && check_challenge($line["challenge"], $number)?"Complete":"Incomplete")  . "</td>";
-							} ?>
 							<td><?php echo $line["timestamp"]; ?></td>
 						</tr>
 					<?php } ?>
 				</table>
+				<?php if($course == 1 && $completed == 18){ ?>
+				<table class="table table-bordered table-striped text" id="table2" style="display:none">
+					<tr valign="bottom";>
+						<th>Username</th>
+						<th>MOV</th>
+						<th>ADD</th>
+						<th>ANDOR</th>
+						<th>ADC</th>
+						<th>CMPXCHGXCHG</th>
+					</tr>
+					<?php foreach($list as $line) { ?>
+						
+						<tr <?php if($line["challenge"]==32767) echo 'class="congrats"';?>>
+							<td><?php echo htmlentities($line["username"]);?></td>
+							<td class="<?php if($line["challenge"]&(1)) echo 'solved'; else echo 'notyet'?>">&#10004;</td>
+							<td class="<?php if($line["challenge"]&(1<<1)) echo 'solved'; else echo 'notyet'?>">&#10004;</td>
+							<td class="<?php if($line["challenge"]&(1<<2)) echo 'solved'; else echo 'notyet'?>">&#10004;</td>
+							<td class="<?php if($line["challenge"]&(1<<3)) echo 'solved'; else echo 'notyet'?>">&#10004;</td>
+							<td class="<?php if($line["challenge"]&(1<<4)) echo 'solved'; else echo 'notyet'?>">&#10004;</td>
+						</tr>
+					<?php } ?>
+				</table>
+				<table class="table table-bordered table-striped text" id="table3" style="display:none">
+					<tr valign="bottom";>
+						<th>Username</th>
+						<th>PUSHPOP</th>
+						<th>RRRRR</th>
+						<th>SBB</th>
+						<th>SUB</th>
+						<th>XADD</th>
+						<th>XOR</th>
+
+					</tr>
+					<?php foreach($list as $line) { ?>
+						
+						<tr <?php if($line["challenge"]==32767) echo 'class="congrats"';?>>
+							<td><?php echo htmlentities($line["username"]);?></td>
+							<td class="<?php if($line["challenge"]&(1<<5)) echo 'solved'; else echo 'notyet'?>">&#10004;</td>
+							<td class="<?php if($line["challenge"]&(1<<6)) echo 'solved'; else echo 'notyet'?>">&#10004;</td>
+							<td class="<?php if($line["challenge"]&(1<<7)) echo 'solved'; else echo 'notyet'?>">&#10004;</td>
+							<td class="<?php if($line["challenge"]&(1<<8)) echo 'solved'; else echo 'notyet'?>">&#10004;</td>
+							<td class="<?php if($line["challenge"]&(1<<9)) echo 'solved'; else echo 'notyet'?>">&#10004;</td>
+							<td class="<?php if($line["challenge"]&(1<<10)) echo 'solved'; else echo 'notyet'?>">&#10004;</td>
+						</tr>
+					<?php } ?>
+				</table>
+				<table class="table table-bordered table-striped text" id="table4" style="display:none">
+					<tr valign="bottom";>
+						<th>Username</th>
+						<th>ODD</th>
+						<th>EVEN</th>
+						<th>PRINTABLE</th>
+						<th>EVEN/ODD</th>
+					</tr>
+					<?php foreach($list as $line) { ?>
+						
+						<tr <?php if($line["challenge"]==32767) echo 'class="congrats"';?>>
+							<td><?php echo htmlentities($line["username"]);?></td>
+							<td class="<?php if($line["challenge"]&(1<<11)) echo 'solved'; else echo 'notyet'?>">&#10004;</td>
+							<td class="<?php if($line["challenge"]&(1<<12)) echo 'solved'; else echo 'notyet'?>">&#10004;</td>
+							<td class="<?php if($line["challenge"]&(1<<13)) echo 'solved'; else echo 'notyet'?>">&#10004;</td>
+							<td class="<?php if($line["challenge"]&(1<<14)) echo 'solved'; else echo 'notyet'?>">&#10004;</td>
+						</tr>
+					<?php } ?>
+				</table>
+					<?php }?>
 				<br>
 			</div>
 		</div>

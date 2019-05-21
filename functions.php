@@ -1,5 +1,40 @@
-<?php
+<!-- Jquery -->
+<?php if(isset($_GET["course"]) && $_GET["course"] == "1" && isset($_GET['hole']) &&(isset($_SESSION["scores"][1]) && count($_SESSION["scores"][1]) == 18)){?> 
 
+<script>
+window.onload = function(){
+
+	$('#Challenges').attr('title', <?php 
+		switch(floor(($_GET["hole"]-1)/3)){
+				#These hints kinda suck so feel free to change them
+			case 0:
+				echo '"Mov your way to the finish for this challenge"';
+				break;
+			case 1:
+				echo '"Fun fact the XOR operator is turing complete"';
+				break;
+			case 2:
+				echo '"ODD way to capitalize the first word"';
+				break;
+			case 3:
+				echo '"EVEN if you figure this out it will not be easy"';
+				break;
+			case 4:
+				echo '"Having a PRINTABLE option is sometimes the only way"';
+				break;
+			case 5:
+				echo '"This one will be tough so no riddle. Every byte must be opposite of the first EVEN/ODD style. Such that if you start with EVEN then go ODD or if you start ODD go EVEN and so on."';
+				break;
+		
+		}
+	?>
+	);
+
+};
+</script>
+
+<?php
+}
 function redirect($page = false, $halt = false) {
 
 	global $default_page;
@@ -99,10 +134,10 @@ function leaderboard($course, $hole) {##broken
 
 	$ret = array();
 
-	$sql = $db->prepare("SELECT tmp.username, MIN(tmp.score) as score, tmp.at FROM (SELECT users.username, solves.score, MIN(solves.at) as at FROM solves JOIN users ON users.id=solves.user WHERE course=? AND hole=? GROUP BY username, score) tmp GROUP BY username ORDER BY score;");
+	$sql = $db->prepare("select tmp.username, min(tmp.score) AS score, tmp.at, tmp.challenge as challenge from (SELECT users.username, solves.score, MIN(solves.at) as at, challenges.value as challenge FROM solves NATURAL LEFT JOIN challenges JOIN users ON users.id=solves.user WHERE course=? AND hole=? GROUP BY username, score)tmp GROUP BY username ORDER BY score;");
 	$sql->bind_param("ii", $course, $hole);
 	$sql->execute();
-	$sql->bind_result($username, $score, $at);
+	$sql->bind_result($username, $score, $at, $challenge);
 
 	while($sql->fetch()) {
 
@@ -110,6 +145,7 @@ function leaderboard($course, $hole) {##broken
 			"username" => $username,
 			"score" => $score,
 			"timestamp" => $at,
+			"challenge" => $challenge
 		);
 
 	}
@@ -183,5 +219,76 @@ function scorecard($username, $course) {
 	$sql->close();
 
 	return $ret;
+}
+function updatescore($user, $course, $hole, $score, $challenges){
 
+	global $db;
+
+	$sql = $db->prepare("INSERT INTO solves (user, course, hole, score) VALUES (?, ?, ?, ?);");
+	$sql->bind_param("iiii", $user, $course, $hole, $score);
+	$sql->execute();
+	$sql->close();
+	
+	if($course == 1){
+
+		$val = $_SESSION["leaderboard"][$course][$hole];
+
+		foreach($val as $users){
+			if($users["username"] == $_SESSION["username"])
+				$challenges |= $users["challenge"];
+		}
+		
+		$sql = $db->prepare("INSERT INTO challenges(hole,user,value,course) values(?, ?, ?, ?) ON DUPLICATE KEY UPDATE value=?;");
+		$sql->bind_param("iiiii", $hole, $user, $challenges, $course, $challenges);
+		$sql->execute();
+		$sql->close();
+	}
+	
+}
+
+function getchallenges($user, $course){
+
+	global $db;
+	$ret = array();
+
+	$sql = $db->prepare("SELECT value, hole FROM challenges JOIN users ON users.id = challenges.user WHERE course=? and username=? ORDER BY hole");
+	$sql->bind_param("is",$course, $user);
+	$sql->execute();
+	$sql->bind_result($value, $hole);
+
+	while($sql->fetch())
+		$ret[$hole]=check_challenge($value, $hole);
+	
+	$sql->close();
+	
+	return $ret;
+
+
+}
+
+function check_challenge($value, $hole){
+
+		switch(($hole-1)/3){
+			case 0:
+				$value = $value&1;#Mov
+				break;
+			case 1:
+				$value = $value&1024;#xor
+				break;
+			case 2:
+				$value = $value&2048;#odd
+				break;
+			case 3:
+				$value = $value&4096;#even
+				break;
+			case 4:
+				$value = $value&8192;#printable
+				break;
+			case 5:
+				$value = $value&16384;#alternate
+				break;
+
+		}
+
+	return $value;
 }
