@@ -7,7 +7,7 @@ if(isset($_POST["submit"])) {
 
 	$response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . $recaptcha_secret .
 		"&response=" . $_POST["g-recaptcha-response"] . "&remoteip=" . $_SERVER['REMOTE_ADDR']);
-	$captcha = true;#json_decode($response, true)["success"];
+	$captcha = json_decode($response, true)["success"];
 
 	if(!$captcha) {
 
