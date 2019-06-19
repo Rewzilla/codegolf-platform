@@ -13,7 +13,7 @@ function testcase($hole, $code, $input) {
 
 	$c_file = $tmp_dir . "/" . $name . ".c";
 	$e_file = $tmp_dir . "/" . $name;
-	$seccomp ="";# dirname(__FILE__) . "/seccomp.blacklist.c";
+	$seccomp = dirname(__FILE__) . "/seccomp.blacklist.c";
 	file_put_contents($c_file, $code);
 
 	$output = shell_exec(
