@@ -105,12 +105,18 @@ function testcase($hole, $code, $input, $registers, $type) {
 		} else if($hole==0){	
 			$output = shell_exec("objdump -D -b binary -Mintel,i386 -mi386 " . $bin_file . " | grep -P '[0-9a-f]+:\\t'") . "\n";
 			$ret = "pass";
-			$output .= str_replace(",", "\n", exec($c_file . " " . $bin_file));
+			$output .= str_replace(",", "\n", exec("timeout 2 " . $c_file . " " . $bin_file));
+
+			if(!strpos($output, "EAX"))
+			       $output .= "Timeout Occured\n";	
 			$size = filesize($bin_file);
 
 		} else {
 			$output = shell_exec("objdump -D -b binary -Mintel,i386 -mi386 " . $bin_file . " | grep -P '[0-9a-f]+:\\t'");
-			$ret = exec("./courses/1/hole" . $hole . " " . $bin_file);
+			$ret = exec("timeout 2 ./courses/1/hole" . $hole . " " . $bin_file);
+			
+			if($ret == "")
+				$ret = "fail";
 			
 			$size = filesize($bin_file);
 		}

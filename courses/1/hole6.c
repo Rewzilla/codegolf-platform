@@ -17,6 +17,7 @@
 
 extern unsigned int eax, ebx, ecx, edx, esi, edi;
 extern unsigned char mem[0x200000];
+//changed the hole, did not like the challenge
 int wincheck;//variable for who one
 int X;
 int O;
@@ -78,3 +79,7 @@ bool verify() {//check for who wins or tie also check for sum of players
 		&& ecx == O;//sum of indexes of o
 
 }
+
+
+
+
