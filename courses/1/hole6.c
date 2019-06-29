@@ -78,3 +78,7 @@ bool verify() {//check for who wins or tie also check for sum of players
 		&& ecx == O;//sum of indexes of o
 
 }
+
+
+
+
