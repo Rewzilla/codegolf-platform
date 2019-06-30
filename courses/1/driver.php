@@ -105,18 +105,28 @@ function testcase($hole, $code, $input, $registers, $type) {
 		} else if($hole==0){	
 			$output = shell_exec("objdump -D -b binary -Mintel,i386 -mi386 " . $bin_file . " | grep -P '[0-9a-f]+:\\t'") . "\n";
 			$ret = "pass";
-			$output .= str_replace(",", "\n", exec("timeout 2 " . $c_file . " " . $bin_file));
+			$output .= str_replace(",", "\n", exec("timeout 5 " . $c_file . " " . $bin_file));
 
 			if(!strpos($output, "EAX"))
-			       $output .= "Timeout Occured\n";	
+			       $output .= "Timeout Occured, please limit your execution to below 5 seconds\n";	
 			$size = filesize($bin_file);
 
 		} else {
-			$output = shell_exec("objdump -D -b binary -Mintel,i386 -mi386 " . $bin_file . " | grep -P '[0-9a-f]+:\\t'");
-			$ret = exec("timeout 2 ./courses/1/hole" . $hole . " " . $bin_file);
+
+			if($hole == 18){
+				$timeout = 20;
+			}
+			else{
+				$timeout = 5;
+			}
 			
-			if($ret == "")
+			$output = shell_exec("objdump -D -b binary -Mintel,i386 -mi386 " . $bin_file . " | grep -P '[0-9a-f]+:\\t'");
+			$ret = exec("timeout " . $timeout . " ./courses/1/hole" . $hole . " " . $bin_file);
+			
+			if($ret == ""){
+				$output = "Timeout detected please limit your execution to below " . $timeout . " seconds\n" . $output;
 				$ret = "fail";
+			}
 			
 			$size = filesize($bin_file);
 		}
