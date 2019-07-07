@@ -1,4 +1,4 @@
-
+#include <asm/unistd.h>
 /*
 This uses a blacklist approch.  This is NOT the most secure
 way to do it, but is easier than figuring out all the syscalls

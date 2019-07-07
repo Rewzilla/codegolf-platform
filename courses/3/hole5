@@ -1,0 +1,36 @@
+GenCyber 2!
+===============================================================================
+
+
+This challenge involves finding the N\'th prime number.  You will be given
+a single integer N, and you must print the N\'th prime number (followed by a
+newline).  N will be counted from 1, and the first prime number is two.
+In other words, the list of possibilities is...
+
+1:2
+2:3
+3:5
+4:7
+5:11
+6:13
+7:17
+etc...
+
+
+Example
+===============================================================================
+
+If your program reads the input:
+12
+
+It should output:
+37
+
+
+Or if it reads the input:
+23
+
+It should output:
+83
+
+

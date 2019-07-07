@@ -1,0 +1,39 @@
+Postfix (RPN) Calculator
+=================================================
+
+
+From Wikipedia...
+
+Reverse Polish notation (RPN) is a mathematical notation in which every
+operator follows all of its operands ... for instance, to add 3 and 4, one
+would write "3 4 +" rather than "3 + 4". If there are multiple operations,
+the operator is given immediately after its second operand; so the expression
+written "3 - 4 + 5" in conventional notation would be written "3 4 - 5 +"
+in RPN: 4 is first subtracted from 3, then 5 added to it.
+
+ -- https://en.wikipedia.org/wiki/Reverse_Polish_notation
+
+=================================================
+
+Your task is to write a program that solves RPN expressions. These expressions
+will be given to the program on STDIN (user input), one-per-line, seperated by
+a single newline character (\n).  They will only contain single-digit numbers
+(i.e. 0-9, nothing larger), but may be of arbitrary length and complexity. Your
+program should read each in, and then output a single integer and a newline as
+a result.  It must handle five operators: + , -, *, /, %. That is, addition,
+subtraction, multiplication, integer division, and modulo.
+
+For example, if your program read in...
+
+62+
+92-8+
+57+9-34*+7%
+78+99*+3/
+
+Then it should output...
+
+8
+15
+1
+32
+

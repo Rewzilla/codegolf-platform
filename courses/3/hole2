@@ -1,0 +1,28 @@
+Greater Gap
+==============================================================================
+
+
+A gap is found in a string if two consecutive characters ascii values are
+farther than 2 apart. For example the string "ACBDF" has no gap greater
+than 2 apart, as the string "AbCD" has a large gap between the ascii value
+for \'A\' and for \'b\'. In this challenge you will read an arbitrary number of
+strings on STDIN and should output "yes" or "no" to whether there was a gap
+found. Input will only consist of alphabetic characters a-zA-Z.
+
+Example
+===============================================================================
+
+If your program reads the input:
+ACBDF
+BBBBBBBBBBBBBBBBBBBBBBBB
+bazyx
+acegikmoq
+BAcD
+
+It should output:
+yes
+yes
+no
+yes
+no
+
