@@ -108,6 +108,8 @@ if(!isset($_GET["course"])) {
 
 		if(isset($_SESSION["scores"][$course]))
 			$completed = count($_SESSION["scores"][$course]);
+		else
+			$completed = 0;
 
 		?>
 		<ul class="breadcrumb" style="display:flex;" >

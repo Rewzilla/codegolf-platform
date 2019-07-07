@@ -66,6 +66,7 @@ INSERT INTO holes(course,number, description) VALUES('3','9','Student ID Number 
 
 INSERT INTO holes(course,number, description) VALUES('3','10','Parabola Zeros<br><hr style="border:2px dashed #000;"><br><br>This problem is base off the problem created by Kyle Korman for the DSU Programming Competition.<br><br>You\'re doing some homework, and you realize how nice it would be to have a<br>program that tells you how many "intersections" a parabola has with<br>a linear function. You settle on just inputting coefficiens for everything, <br>because who cares if anyone else can understand your program?<br><br>The first input will contain three integers: A, B, and C. They<br>relate to the parabola in the form, y = Ax^2 + Bx + C. The line after this<br>will contain two integers D and E. They relate to the line in the form,<br>y = Dx + E. The range for A, B, and C are between -25 to 25 and the,<br>range for D and E is -10000 to 10000.<br><br>Given the equations return how many times the two intersect.<br><br>Example<br><hr style="border:2px dashed #000;"><br>If your program reads the input:<br>16 -1 -23<br>103 -3657<br><br>It should output:<br>0<br><br>Or, if your program reads the input:<br>-23 25 0<br>807 6647<br><br>It should output:<br>1<br><br>Or, if your program reads the input:<br>-21 -5 -20<br>8746 -2909<br><br>It should output:<br>2<br><br><br>');
 
+CREATE TABLE `challenges` (
   `hole` int(11) NOT NULL,
   `user` int(11) NOT NULL,
   `value` int(11) DEFAULT NULL,

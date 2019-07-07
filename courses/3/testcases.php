@@ -611,8 +611,6 @@ $testcases = array(
 		}
 		$input .= $a . ' ' . $b . ' ' . $c . '\n' . $d . ' ' . $e . '\n';
 		$output .= $z . '\n';
-		var_dump($input);
-		var_dump($output);
 		
 
 		return io($input, $output);
