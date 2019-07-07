@@ -106,7 +106,9 @@ if(!isset($_GET["course"])) {
 		$sql->fetch();
 		$sql->close();
 
-		$completed = count($_SESSION["scores"][$course]);
+		if(isset($_SESSION["scores"][$course]))
+			$completed = count($_SESSION["scores"][$course]);
+
 		?>
 		<ul class="breadcrumb" style="display:flex;" >
 			<li class="breadcrumb-item" ><a href="/play">Courses</a></li>
@@ -183,7 +185,7 @@ if(!isset($_GET["course"])) {
 		?>
 
 				<form id="post" action="/play/<?php echo $course; ?>/<?php echo $number; ?>" method="POST" onsubmit="document.getElementById('code').value = editor.getValue();">
-		<div class="row">
+			<div class=<?php if(strlen($description)>500) echo '"column"'; else echo '"row"';?>>
 				<div style="width:100%;padding:0 15px;">
 					<?php if($number == 0 && $course == 1){#pretty ugly but it seems to do its job
 						$registers = array("eax","ebx","ecx","edx","esi","edi","ebp","esp"); ?>
@@ -232,7 +234,7 @@ if(!isset($_GET["course"])) {
 						?>
 					<input type="submit" class="btn btn-primary" name="submit[]" value="Run">
 			</div>
-			<div class="col-lg-4">
+			<div class="col-lg-4" align="center" <?php if(strlen($description)>500) echo 'style="max-width:100%"'?>>
 				<h5>Description</h5>
 				<div class="card card-body">
 					<?php echo $description; ?>
@@ -244,7 +246,7 @@ if(!isset($_GET["course"])) {
 				if(!isset($_SESSION["leaderboard"][$course][$number]) || (isset($ret) && $ret["valid"]))
 					$_SESSION["leaderboard"][$course][$number] = leaderboard($course, $number);
 				$list = $_SESSION["leaderboard"][$course][$number];
-				$min = $list[0]["score"];
+				$min = (isset($list[0])?$list[0]["score"]:0);
 			?>
 				<br>
 				<h5>Par <kbd><?php if(isset($_SESSION['scores'][$course][$number])) echo $_SESSION['par'][$course][$number] ?? par($list); else echo "Hidden"; ?></kbd></h5>
