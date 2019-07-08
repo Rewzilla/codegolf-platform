@@ -619,7 +619,9 @@ $testcases = array(
 
 	"11" => function() use ($wordlist){
 
-		return io('', '');
+		$output = "OXOXOXOXOX\nXOXOXOXOXO\nOXOXOXOXOX\nXOXOXOXOXO\nOXOXOXOXOX\n";
+
+		return io('', $output);
 
 	},
 

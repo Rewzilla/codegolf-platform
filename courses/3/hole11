@@ -1,0 +1,22 @@
+Golden
+==============================================================================
+
+Credit for this challenge goes to Richard Golden (LSU)
+
+This challenge is slightly different than the original challenge but we will 
+press on. You will be given no input and expected to output the same string
+every time. A 5*5 string of alternating O\'s and X\'s
+
+Example
+=============================================================================
+
+If your program reads the input:
+
+
+It should output:
+
+OXOXOXOXOX
+XOXOXOXOXO
+OXOXOXOXOX
+XOXOXOXOXO
+OXOXOXOXOX

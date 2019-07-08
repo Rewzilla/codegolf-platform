@@ -108,13 +108,13 @@ function testcase($hole, $code, $input, $registers, $type) {
 			$output .= str_replace(",", "\n", exec("timeout 5 " . $c_file . " " . $bin_file));
 
 			if(!strpos($output, "EAX"))
-			       $output .= "Timeout Occured, please limit your execution to below 5 seconds\n";	
+			       $output .= "Program crashed or Timeout Occured, please limit your execution to below 5 seconds\n";	
 			$size = filesize($bin_file);
 
 		} else {
 
 			if($hole == 18){
-				$timeout = 20;
+				$timeout = 25;
 			}
 			else{
 				$timeout = 5;
@@ -124,7 +124,7 @@ function testcase($hole, $code, $input, $registers, $type) {
 			$ret = exec("timeout " . $timeout . " ./courses/1/hole" . $hole . " " . $bin_file);
 			
 			if($ret == ""){
-				$output = "Timeout detected please limit your execution to below " . $timeout . " seconds\n" . $output;
+				$output = "Program crashed or Timeout detected please limit your execution to below " . $timeout . " seconds\n" . $output;
 				$ret = "fail";
 			}
 			

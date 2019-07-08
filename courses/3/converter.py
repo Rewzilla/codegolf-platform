@@ -1,6 +1,6 @@
 
 with open("sql", 'w') as w:
-    for x in range(1,11):
+    for x in range(1,12):
         with open('hole' + str(x), 'r') as fp:
             w.write("INSERT INTO holes(course,number, description) VALUES('3','" + str(x) + "','")
             for y in fp.read().split('\n'):
