@@ -114,10 +114,10 @@ function testcase($hole, $code, $input, $registers, $type) {
 		} else {
 
 			if($hole == 18){
-				$timeout = 25;
+				$timeout = 40;
 			}
 			else{
-				$timeout = 5;
+				$timeout = 10;
 			}
 			
 			$output = shell_exec("objdump -D -b binary -Mintel,i386 -mi386 " . $bin_file . " | grep -P '[0-9a-f]+:\\t'");
