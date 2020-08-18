@@ -1,0 +1,4 @@
+Given a number determine if this number has a whole number square root and print it out. Print out 0 if it is not.
+Example:
+	Input: 225
+	Ouptut: 15

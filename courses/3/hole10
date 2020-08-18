@@ -1,0 +1,43 @@
+Parabola Zeros
+===============================================================================
+
+
+This problem is base off the problem created by Kyle Korman for the DSU Programming Competition.
+
+You\'re doing some homework, and you realize how nice it would be to have a
+program that tells you how many "intersections" a parabola has with
+a linear function. You settle on just inputting coefficiens for everything, 
+because who cares if anyone else can understand your program?
+
+The first input will contain three integers: A, B, and C. They
+relate to the parabola in the form, y = Ax^2 + Bx + C. The line after this
+will contain two integers D and E. They relate to the line in the form,
+y = Dx + E. The range for A, B, and C are between -25 to 25 and the,
+range for D and E is -10000 to 10000.
+
+Given the equations return how many times the two intersect.
+
+Example
+===============================================================================
+
+If your program reads the input:
+16 -1 -23
+103 -3657
+
+It should output:
+0
+
+Or, if your program reads the input:
+-23 25 0
+807 6647
+
+It should output:
+1
+
+Or, if your program reads the input:
+-21 -5 -20
+8746 -2909
+
+It should output:
+2
+

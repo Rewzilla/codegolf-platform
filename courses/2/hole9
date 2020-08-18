@@ -1,0 +1,4 @@
+Now we will start to get a little bit trickier, Read in a string and reverse the characters found within parentheses, and remove the parentheses.
+Example:
+	Input: "This is (reversed), this is a (detsen(reversal))"
+	Output: "This is desrever, this is a nested reversal"

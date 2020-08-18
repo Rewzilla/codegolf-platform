@@ -1,0 +1,45 @@
+Bank Transactions
+===============================================================================
+
+
+A local bank has asked you to build a transaction resolution system.  It will
+work as follows.
+
+   1. You will be given a list of accounts and their balances in the form:
+
+      #12345:$99.12
+
+      Where the first #N is the account number and the $N.NN is the balance.
+      Account numbers will always be between 4 and 8 digits.  Balances will
+      always be positive, and always represented as a floating point number
+      defined to two decimal places.  There may be an arbitrary number of
+      accounts.
+
+   2. You will then be given a list of transactions in the form:
+
+      #12345->#98765:$12.34
+
+      Where the -> means that the first account is sending money to the
+      second account, and the dollar value represents the amount sent.  The
+      account numbers and dollar values will follow the same rules from above.
+      There may be an arbitrary number of transactions.
+
+   3. You must then print out a list of final account balances, ordered by
+      balance in *descending* order, and in the same format that you read
+      them in.
+
+
+Example
+===============================================================================
+
+If your program reads the input:
+
+#12345:$56.75
+#98765:$22.11
+#12345->#98765:$23.45
+
+It should output:
+
+#98765:$45.56
+#12345:$33.30
+

@@ -61,7 +61,6 @@ void base64encode(){//homemade base32 encode
 }
 
 void setup() {//I know you liked the first one so here is the second, base 64 encode the string pointed to by eax, put the answer in the location pointed to by ebx, and move the starting location back into eax.(Character set is A-Za-z0-9+/=)
-	srand(time(0));
 
 	int size = rand()%25+25;
 	string1 = malloc(size+1);

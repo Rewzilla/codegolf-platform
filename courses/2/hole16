@@ -1,0 +1,14 @@
+Given an array of numbers, sort the array by the number of ones in its binary, if two have the same number of ones in their binary then sort them by their reversed value.
+
+Example:
+	Input: 1024
+	       91210
+	       8675309
+	       9068517
+	       3
+
+	Output: 1024
+		3
+		91210
+		9068517
+		8675309

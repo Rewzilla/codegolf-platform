@@ -1,0 +1,40 @@
+C + VI = 106
+===============================================================================
+
+
+Thanks/credit to Shawn Zwach for this challenge!
+
+This challenge is designed with our fantastic 150 students in mind again, and
+still only requires basic C knowledge to complete. Your program will read from
+stdin until input stops. Each line will contain two integers represented by
+Roman numerals (subtractive notation) separated by an operator for addition(+),
+subtraction(-), or multiplication(*). There may be any number of leading or
+trailing spaces surrounding the numbers. For each line of input, you must print
+one line of output with the result of the operation as a number followed by a
+new line. Once all operations are completed, print the sum of the result of all
+ops followed by a newline. The largest integer you must handle on either side
+of an operator is 300. There will be at most 100 lines of input.
+
+
+Example
+===============================================================================
+
+If your program reads the input:
+
+XXIX * III
+   CXL - IX
+CCVII + VII
+ X + X
+    II *III
+ IV - V
+
+It should output:
+
+87
+131
+214
+20
+6
+-1
+
+

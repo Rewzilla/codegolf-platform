@@ -18,7 +18,6 @@ extern unsigned int eax, ebx, ecx, edx, esi, edi;
 extern unsigned char mem[0x200000];
 unsigned char *string1, *string2;
 void setup() {//combine the strings one character at a time
-	srand(time(0));
 	int size = rand()%25+25;
 	string1 = malloc(size+1);
 	string2 = malloc(size+1);

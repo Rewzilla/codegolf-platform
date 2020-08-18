@@ -1,0 +1,36 @@
+GenCyber
+===============================================================================
+
+
+
+This challenge is for GenCyber2019 campers!
+
+You will be given an 8-character string on stdin followed by a single 
+newline (\n).  The string will always be "GenCyber", but with one character
+replaced with something incorrect; for instance "GenC7ber".
+
+Your job is to print the index of the incorrect character (starting from 0), 
+the incorrect chracter, and the correct character for that position, seperated
+by colons, and followed by a newline (\n).
+
+Example
+===============================================================================
+
+If your program reads the input:
+GenCyFer
+
+It should output:
+5:F:b
+
+Or, if your program reads the input:
+%enCyber
+
+It should output:
+0:%:G
+
+Or, if your program reads the input:
+GenCybez
+
+It should output:
+7:z:r
+

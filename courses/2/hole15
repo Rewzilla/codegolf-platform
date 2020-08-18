@@ -1,0 +1,10 @@
+Given a number, print out the largest possible value by deleting one of the digits in the given number
+Example 1:
+	Input: 123
+	Output: 23
+Example 2:
+	Input: 987
+	Output: 97
+Example 3:
+	Input: 12
+	Output: 2

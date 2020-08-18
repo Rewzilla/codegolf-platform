@@ -72,7 +72,6 @@ void createstring(){
 
 void setup() {
 //wasn't that last hole fun now lets decode that string we just made, eax points to in and ebx points to the final location, same character sets. When you finished move into eax the strings location
-	srand(time(0));
 
 	createstring(); 
 	eax = 0x600000;
@@ -83,6 +82,6 @@ void setup() {
 
 bool verify() {
 	
-	return !strncmp(mem+eax-0x600000, string1, strlen(string1)+1);
+	return !strncmp(mem+eax-0x600000, string1, strlen(string1));
 
 }

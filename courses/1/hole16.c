@@ -60,7 +60,6 @@ struct list* createnode(){
 
 void createll(){
 	ints = chars = strings = total = 0;
-	srand(time(0));
 	int num = rand()%15+10;
 	head = createnode();
 	struct list* tmp = head;

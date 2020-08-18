@@ -40,11 +40,11 @@ DROP TABLE IF EXISTS `holes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `holes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
   `course` int(11) DEFAULT NULL,
   `number` int(11) DEFAULT NULL,
+  `title` text,
   `description` text,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`course`,`number`)
 ) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -97,6 +97,25 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table for Challenges on courses currently just course 1
+--
+
+DROP TABLE IF EXISTS `challenges`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `challenges` (
+  `hole` int(11) NOT NULL,
+  `user` int(11) NOT NULL,
+  `value` int(11) DEFAULT NULL,
+  `course` int(11) NOT NULL,
+  PRIMARY KEY ('hole','user','course')
+) ENGINE=InnoDB AUTO_INCREMENT=592 DEFAULT CHARSET=utf8mb4;
+
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -107,4 +126,3 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-18 16:17:40

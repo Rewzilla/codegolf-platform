@@ -1,0 +1,27 @@
+Palindromes
+===============================================================================
+
+
+A palindrome is a string that reads the same forwards or backwards.  For
+instance, the strings "racecar" and "1234321" are both palindromes.  In this
+challenge you will read an arbitrary number of strings on STDIN and should
+ouput whether the string is a palindrome, followed by a colon, and then the
+sum of the ascii values of each character in the string.
+
+Example
+===============================================================================
+If your program reads the input:
+
+ABCBA
+AB22BA
+hello
+
+It should output:
+
+yes:329
+yes:362
+no:532
+
+Because "ABCBA" is a palindrome and its character sum is: 65+66+67+66+65=329
+etc...
+
