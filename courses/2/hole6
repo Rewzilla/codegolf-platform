@@ -1,4 +1,0 @@
-This time read in a string and print out how many characters, words, and newlines there are.
-Example:
-	Input: "This string contains seventy eight characters\neleven words\n and three newlines"
-	Output: "78 11 3"

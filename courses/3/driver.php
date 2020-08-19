@@ -19,6 +19,7 @@ function testcase($hole, $code, $input) {
 	$output = shell_exec(
 		"gcc -std=c99 -w -o " . $e_file. " " . $seccomp . " " . $c_file . " -lseccomp 2>&1 " .
 		"|grep -v '.o: In function'" .
+		"|grep -v '.o: in function'" .
 		"|grep -v 'function is dangerous and should not be used'"
 	);
 
@@ -65,7 +66,14 @@ function testcase($hole, $code, $input) {
 				$output = "Program took too long to run.";
 				$ret = "fail";
 				$size = "inf";
+			} else if(strpos($err,"Segmentation fault") !== false) {
+				$output = "Segmentation Fault";	
+				$ret = "fail";
+				$size = "inf";
 			} else if($result != $io["output"]){
+				#var_dump($io["input"]);
+				#var_dump($io["output"]);
+				#var_dump($result);
 				$output = "Incorrect Solution.";
 				$ret = "fail";
 				$size = "inf";
@@ -78,7 +86,6 @@ function testcase($hole, $code, $input) {
 				$ret = "pass";
 				$size = filesize($c_file);
 			}
-			var_dump($output);
 			if($output != "" || $hole == 0)
 				break;
 		}

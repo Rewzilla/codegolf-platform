@@ -67,6 +67,10 @@ function testcase($hole, $code, $input) {
 				$ret = "fail";
 				$size = "inf";
 			} else if($result != $io["output"]){
+
+				#var_dump($io["input"]);
+				#var_dump($io["output"]);
+				#var_dump($result);
 				$output = "Incorrect Solution.";
 				$ret = "fail";
 				$size = "inf";

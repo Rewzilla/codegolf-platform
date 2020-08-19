@@ -18,8 +18,6 @@ $wordlist = array("This", "is", "my", "random", "sentence", "generator", "list",
 
 function io($input, $output){
 
-	var_dump($input);
-	var_dump($output);
 	return array("input" => $input . "\n", "output" => $output . "\n");	
 
 }
@@ -431,7 +429,7 @@ $testcases = array(
 		ksort($array);
 		$array = array_map(
 			function($tmparray){ #this is pretty gross but it works
-				
+				#goes through each individual array converts the numbers to strings, reverses them, then converts them back	
 				$tmparray= array_map("strval",$tmparray);
 				$tmparray=array_map("strrev",$tmparray);
 				$tmparray=array_map("intval",$tmparray);

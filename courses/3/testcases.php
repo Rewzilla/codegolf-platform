@@ -13,13 +13,11 @@ if($urand){
 else
 	srand(time(0));
 
-$alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,/;:<>?! ";
+$alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,/;:<>?!";
 $wordlist = array("This", "is", "my", "random", "sentence", "generator", "list", "I", "think", "my", "plan", "should", "work", "but", "who", "knows", "anyways", "if", "there", "are", "other", "words", "or", "a", "different", "and", "better", "way", "becomes", "available", "please", "do", "not", "hesitate", "to", "change", "this", "method", "thanks", "extra");
 
 function io($input, $output){
 
-	var_dump($input);
-	var_dump($output);
 	return array("input" => $input, "output" => $output);	
 
 }
@@ -44,13 +42,12 @@ $testcases = array(
 			$actlen = rand(4,8);
 			$tmp ="";
 
-			for($y = 0; $y < $actlen; $y++)
-				$tmp .= rand(0,9);
+			$tmp = strval(rand(1000,99999999));
 
 			array_push($accounts, $tmp);
 
 			array_push($balances,round(rand(0,100)/100 + rand(0,1000), 2));
-			$input .= '#' . $accounts[$x] . ':$' . $balances[$x] . '\n';
+			$input .= '#' . $accounts[$x] . ':$' . $balances[$x] . "\n";
 		}
 
 		$numtrans = rand(1,15);	
@@ -72,13 +69,27 @@ $testcases = array(
 			while($reciever == $sender)
 				$reciever = rand(0,$num-1);
 
-			$input .= '#' . $accounts[$sender] . '->#' . $accounts[$reciever] . ':$' . $amount . '\n';	
+			$input .= '#' . $accounts[$sender] . '->#' . $accounts[$reciever] . ':$' . $amount . "\n";	
 			$balances[$sender] -= $amount;
 			$balances[$reciever] += $amount;
 		}	
 
 		for($x = 0; $x < $num; $x++)
-			$output .= '#' . $accounts[$x] . ':$' . number_format($balances[$x],2,'.','') . '\n';	
+		{
+			for($y = $x; $y < $num; $y++){
+				if($balances[$y] > $balances[$x]){
+					$swap = $balances[$x];
+					$balances[$x] = $balances[$y];
+					$balances[$y] = $swap;
+					$swap = $accounts[$x];
+					$accounts[$x] = $accounts[$y];
+					$accounts[$y] = $swap;
+				}
+			}
+			
+		}
+		for($x = 0; $x < $num; $x++)
+			$output .= '#' . $accounts[$x] . ':$' . number_format($balances[$x],2,'.','') . "\n";	
 
 
 		return io($input, $output);
@@ -97,10 +108,12 @@ $testcases = array(
 			$size = rand(1,15);
 			$test = rand(0,1);
 			$last = 0;
-			$ltmp = 0;
+			$ltmp = 0; #last variable
+			if($test == 0 && $size < 5)
+				$size = rand(6,15);
 
 			for($y = 0; $y < $size; $y++){
-				if($test || $size == 1){
+				if($test){ #determins if test is yes or no
 					
 					if($y == 0)	
 						$ltmp =rand(0,51);
@@ -109,7 +122,7 @@ $testcases = array(
 							$ltmp = $last;
 							$ltmp += rand(-2,2);
 							
-							if($ltmp >= 0 && $ltmp <= 52 && 
+							if($ltmp >= 0 && $ltmp <= 51 && 
 							(($alphabet[$ltmp] < 'a' && $tmp[-1] < 'a') || 
 							($alphabet[$ltmp] >= 'a' && $tmp[-1] >= 'a')))
 								break;
@@ -117,13 +130,13 @@ $testcases = array(
 					$last = $ltmp;
 					$tmp .= $alphabet[$last];
 				}
-				else #don't like this idea since it does not always guarentee a no
+				else #don't like this idea since it does not always guarentee a yes
 					$tmp .= $alphabet[rand(0,51)];
 
 			}
 
-			$input .= $tmp . '\n';
-			$output .= ($test?"no":"yes") . '\n';
+			$input .= $tmp . "\n";
+			$output .= ($test?"no":"yes") . "\n";
 
 		}
 
@@ -144,8 +157,8 @@ $testcases = array(
 				break;
 		}
 
-		$output = $loc . ':' . $tmp . ':' . $string[$loc] . '\n';
-		$input = $string . '\n';
+		$output = $loc . ':' . $tmp . ':' . $string[$loc] . "\n";
+		$input = $string . "\n";
 		$input[$loc] = $tmp;		
 
 		return io($input, $output);
@@ -162,7 +175,9 @@ $testcases = array(
 			$test = rand(0,1);
 			$string = "";
 			$total = 0;
-			if($test || $strlen == 1){
+			if($test == 0 && $strlen < 6)
+				$strlen = rand(6,25);
+			if($test){
 				for($y = 0; $y < $strlen/2; $y++){
 					$string .= $alphabet[rand(0, strlen($alphabet)-1)];	
 					$total += ord($string[-1]);
@@ -182,8 +197,8 @@ $testcases = array(
 					$string .= $alphabet[rand(0,strlen($alphabet)-1)];
 					$total += ord($string[-1]);
 				}
-			$input .= $string . '\n';
-			$output .= ($test?"yes":"no") . ":" . $total . '\n';
+			$input .= $string . "\n";
+			$output .= ($test?"yes":"no") . ":" . $total . "\n";
 		}
 
 		return io($input, $output);
@@ -214,8 +229,8 @@ $testcases = array(
 			}
 		}
 
-		$input .= $num . '\n';
-		$output .= $prime . '\n';
+		$input .= $num . "\n";
+		$output .= $prime . "\n";
 
 		return io($input, $output);
 
@@ -224,9 +239,11 @@ $testcases = array(
 
 	"6" => function() {
 		
-		$num = rand(1,10);
+		$num = rand(1,2);
 		$input = "";
 		$output = "";
+		$chr = "";
+		$lchr = "";
 		for($x = 0; $x < $num; $x++){
 
 			$string1 = "";
@@ -237,19 +254,22 @@ $testcases = array(
 
 			for($y = 0; $y < $tmp; $y++){
 				$tmp2 = rand(1,20);
-				$string1 .= str_repeat(chr(rand(32,0x7e)),$tmp2);
-				$string2 .= "%" . $tmp2 . "$" . $string1[-1];
+				while($chr == $lchr)
+					$chr = chr(rand(33,0x7e));#The original challenge also did spaces, but php will not work with consecutive spaces
+				$string1 .= str_repeat($chr,$tmp2);
+				$string2 .= "%" . $tmp2 . "$" . $chr;
+				$lchr=$chr;
 			}
-			$string1 .= '\n';
-			$string2 .= '\n';
+			$string1 .= "\n";
+			$string2 .= "\n";
 
 			if(rand(0,1)){
-				$input .= "e " . $string1 . '\n';
-				$output .= $string2 . '\n';
+				$input .= "e " . $string1;
+				$output .= $string2;
 			}
 			else{
-				$input .= "d " . $string2 . '\n';
-				$output .= $string1 . '\n';
+				$input .= "d " . $string2;
+				$output .= $string1;
 			}
 
 
@@ -292,21 +312,21 @@ $testcases = array(
 				$input .= $returnValue;
 
 				if($x == 1){
-					$input .= '\n';
+					$input .= "\n";
 					continue;
 				}
 				
 				switch(rand(0,2)){
 					case 0:
-						$output .= $number3 + $number2 . '\n';
+						$output .= $number3 + $number2 . "\n";
 						$input .= ' + ';
 						break;
 					case 1:
-						$output .= $number3 - $number2 .'\n';
+						$output .= $number3 - $number2 ."\n";
 						$input .= ' - ';
 						break;
 					case 2:
-						$output .= $number3 * $number2 . '\n';
+						$output .= $number3 * $number2 . "\n";
 						$input .= ' * ';
 
 				}
@@ -401,7 +421,10 @@ $testcases = array(
 						case '/':
 							if($second == 0)
 								return -99999;
-							$first /= $second;
+							if($first/$second<0)
+								$first = ceil($first/$second);
+							else
+								$first = floor($first/$second);
 							break;
 
 						case '%':
@@ -426,7 +449,7 @@ $testcases = array(
 		$input = "";
 		$output = "";
 
-		$num = rand(1,15);
+		$num = rand(1,2);
 
 		while($num--){
 			$string = $createrpn();
@@ -436,8 +459,8 @@ $testcases = array(
 				$num++; #value failed probably divide by zero
 				continue;
 			}
-			$input .= $string . '\n';
-			$output .= round($value) . '\n';
+			$input .= $string . "\n";
+			$output .= round($value) . "\n";
 		}
 
 		return io($input, $output);	
@@ -449,16 +472,16 @@ $testcases = array(
 		$input = "";
 
 		$numbers = "0123456789";
-		$num = rand(1,15);
+		$num = rand(1,2);
 
 		while($num--){
 			
-			$total = 0;
 			$string = "";
 			if(rand(0,1)){#valid
 				$size = rand(7,9);
 		
 				while(1){
+					$total = 0;
 					for($x = 0; $x < $size; $x++){
 
 						while(1){
@@ -470,17 +493,16 @@ $testcases = array(
 						}
 						$total += strval($string[$x]);
 					}
-
 					if($total % 7 && $total % 11)
 						break;
 
 				}
-				$input .= $string . '\n';
-				$output .= "valid" . '\n';
+				$input .= $string . "\n";
+				$output .= "valid" . "\n";
 			}
 			else{#notvalid
 				
-				switch(rand(0.4)){
+				switch(rand(0,4)){
 					case 0:#too short
 						$qwerty = rand(1,6);
 						while($qwerty--)
@@ -543,8 +565,8 @@ $testcases = array(
 						}
 				}	
 
-				$input .= $string . '\n';
-				$output .= "invalid" . '\n';
+				$input .= $string . "\n";
+				$output .= "invalid" . "\n";
 			}
 
 		}
@@ -611,8 +633,8 @@ $testcases = array(
 				}while($k <= 0);
 				$z = 2;
 		}
-		$input .= $a . ' ' . $b . ' ' . $c . '\n' . $d . ' ' . $e . '\n';
-		$output .= $z . '\n';
+		$input .= $a . ' ' . $b . ' ' . $c . "\n" . $d . ' ' . $e . "\n";
+		$output .= $z . "\n";
 		
 
 		return io($input, $output);

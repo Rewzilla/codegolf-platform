@@ -1,4 +1,0 @@
-This hole will have you read in a string and print out the rot13 equivalent of the string
-Example:
-	Input: "Please rotate me if you could"
-	Output: "Cyrnfr ebgngr zr vs lbh pbhyq"

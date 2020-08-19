@@ -1,7 +1,0 @@
-Elcomeway otay ethay inalfay olehay inyay isthay oursecay. Welcome to the final hole in this course. I can't say that I am surprised but this one is weird. Given a string convert the string to pig latin. Here are the rules:
-	1. Words beginning with consonants, take all the consonants before the first value, move them to the end of the word, and add 'ay'. latin -> atinlay
-	2. If a word begins in a vowel, y included, add 'yay' to the end. example -> exampleyay
-
-Example: 
-	Input: convert this sentence to latin of the pigs
-	Output: onvertcay isthay entencesay otay atinlay ofyay ethay igspay

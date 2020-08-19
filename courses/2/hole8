@@ -1,6 +1,0 @@
-For this hole, two numbers will be given to you then an array. Every instance of the first number needs to be replaced in the array. Then print out the array.
-Example:
-	Input: 5 9
-	3 4 5 6 7 8 9 3 4 5
-
-	Output: 3 4 9 6 7 8 9 3 4 9
