@@ -142,7 +142,6 @@ function testcase($hole, $code, $input, $registers, $type) {
 		"valid" => $ret != "fail",
 		"size" => $size,
 		"output" => $output,
-		"challenges" => $ret
 	);
 
 }

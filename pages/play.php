@@ -41,12 +41,6 @@ if(!isset($_GET["course"])) {
 		$_SESSION["par"][$_GET["course"]]=$par;
 
 	}
-	if(count($scores) == 18)
-		if(count($scores) == 18 && !isset($_SESSION["challenges"])){
-			$challenges = getchallenges($_SESSION["username"], $_GET["course"]);
-			$_SESSION["challenges"]=$challenges;
-		} else
-			$challenges = $_SESSION["challenges"];
 
 	$sql = $db->prepare("SELECT language, description, syntax FROM courses WHERE id=?;");
 	$sql->bind_param("i", $_GET["course"]);
@@ -74,9 +68,6 @@ if(!isset($_GET["course"])) {
 				<th>Title</th>
 				<th>Par</th>
 				<th>My Best</th>
-				<?php if($_GET["course"] == 1 && count($scores) == 18){ ?>
-				<th title="Each hole has 1 challenge with the same challenge being grouped for every three holes. The challenge is a secret; you will be given a hint if you hover over the challenge keyword in the leaderboard, Good Luck!">Challenges</th>
-				<?php }?>
 			</tr>
 			<?php $counter = count($scores)+5; while($sql->fetch()&&$counter--) { ?>
 				<tr <?php  if(isset($scores[$number]) && $scores[$number]<$par[$number] )echo 'style="background:lightgreen;";'?>>
@@ -84,11 +75,6 @@ if(!isset($_GET["course"])) {
 					<td><?php echo $title; ?></td>
 					<td><?php if(isset($scores[$number]))echo $par[$number] ?? "unknown"; else if($number == 0) echo " "; else echo "Hidden"; ?></td>
 					<td><?php echo $scores[$number] ?? " "; ?></td>
-					<?php if($course == 1 && count($scores) == 18) { ?>
-						<td>
-							<?php if($number > 0) echo substr_count(decbin((isset($challenges[$number])?$challenges[$number]:0)), '1') . " / 1"; ?>
-						</td>
-					<?php } ?>
 				</tr>
 			<?php } ?>
 		</table>
@@ -105,12 +91,6 @@ if(!isset($_GET["course"])) {
 		$sql->bind_result($course, $number, $title, $description);
 		$sql->fetch();
 		$sql->close();
-
-		if(isset($_SESSION["scores"][$course]))
-			$completed = count($_SESSION["scores"][$course]);
-		else
-			$completed = 0;
-
 		?>
 		<ul class="breadcrumb" style="display:flex;" >
 			<li class="breadcrumb-item" ><a href="/play">Courses</a></li>
@@ -128,23 +108,13 @@ if(!isset($_GET["course"])) {
 			if($ret !== false && $ret["valid"] && $number != 0) {
 
 				$userid = get_userid(); #could switch to session variable
-				if(isset($_SESSION["challenges"][$number]))
-					$_SESSION["challenges"][$number] |= $ret["challenges"];
-
-				updatescore($userid, $course, $number, $ret["size"], $completed == 18?$ret["challenges"]:0);
+				if(!isset($_SESSION["scores"][$course][$number]) || $_SESSION["scores"][$course][$number]>$ret["size"])
+					updatescore($userid, $course, $number, $ret["size"]);
+				//only updates the score if it is a lowerscore or if the score is not yet set
 
 				if(!isset($_SESSION["scores"][$course][$number]) || $_SESSION["scores"][$course][$number]>$ret["size"]){
 					$_SESSION["scores"][$course][$number]=$ret["size"];
 					$_SESSION["par"][$course][$number]=holepar($course,$number);
-
-					if(count($_SESSION["scores"][$course]) == 18 && $course == 1 && $completed != 18){ ?>
-							<script>
-								alert("Congrats!!! You have completed all 18 holes, but your next challenge awaits. Go back to the course page to load them in and hover over the Challenges tab for a description.");
-
-							</script>
-					<?php }
-
-					
 				}
 
 			}
@@ -269,16 +239,11 @@ if(!isset($_GET["course"])) {
 			<div class="col-lg" id="leaderboard">
 				<div>
 					<h5 class="current" id="Leaderboard">Leaderboard</h5>
-					<?php if($course == 1 && $completed == 18){ ?>
-					<?php }?>
 				</div>
 				<table class="table table-bordered table-striped text" id="table1">
 					<tr>
 						<th>Username</th>
 						<th>Score</th>
-						<?php if($course == 1 && $completed == 18){ ?>
-							<th id="Challenges">Challenges</th>
-						<?php } ?>
 						<th>Timestamp</th>
 						
 					</tr>
@@ -286,9 +251,6 @@ if(!isset($_GET["course"])) {
 					<tr>
 							<td><?php echo htmlentities($line["username"]); ?></td>
 							<td><?php if(isset($_SESSION['scores'][$course][$number]))echo $line["score"]; else echo "Hidden" ?></td>
-							<?php if($course == 1 && $completed == 18){ 
-								echo "<td>" . (isset($line["challenge"]) && check_challenge($line["challenge"], $number)?"Complete":"Incomplete")  . "</td>";
-							} ?>
 							<td><?php echo $line["timestamp"]; ?></td>
 						</tr>
 					<?php } ?>

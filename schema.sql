@@ -75,7 +75,7 @@ CREATE TABLE `solves` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `hole` int(11) DEFAULT NULL,
   `user` int(11) DEFAULT NULL,
-  `score` int(11) DEFAULT NULL,
+  'score' int(11) DEFAULT NULL,
   `at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `course` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -97,24 +97,6 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table for Challenges on courses currently just course 1
---
-
-DROP TABLE IF EXISTS `challenges`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `challenges` (
-  `hole` int(11) NOT NULL,
-  `user` int(11) NOT NULL,
-  `value` int(11) DEFAULT NULL,
-  `course` int(11) NOT NULL,
-  PRIMARY KEY ('hole','user','course')
-) ENGINE=InnoDB AUTO_INCREMENT=592 DEFAULT CHARSET=utf8mb4;
-
-/*!40101 SET character_set_client = @saved_cs_client */;
-
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
