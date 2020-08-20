@@ -108,9 +108,9 @@ if(!isset($_GET["course"])) {
 			if($ret !== false && $ret["valid"] && $number != 0) {
 
 				$userid = get_userid(); #could switch to session variable
-				if(!isset($_SESSION["scores"][$course][$number]) || $_SESSION["scores"][$course][$number]>$ret["size"])
+				if(!isset($_SESSION["scores"][$course][$number]) || $_SESSION["scores"][$course][$number]>=$ret["size"])
 					updatescore($userid, $course, $number, $ret["size"]);
-				//only updates the score if it is a lowerscore or if the score is not yet set
+				//only updates the score if it is a less than or equal or if the score is not yet set
 
 				if(!isset($_SESSION["scores"][$course][$number]) || $_SESSION["scores"][$course][$number]>$ret["size"]){
 					$_SESSION["scores"][$course][$number]=$ret["size"];
