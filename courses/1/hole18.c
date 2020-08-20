@@ -30,7 +30,6 @@ struct nodes* createnode(){
 }
 
 void creategraph(){
-	srand(time(0));
 	list = malloc(num*sizeof(struct nodes*));
 	for(int i = 0; i < num;i++){
 		list[i] = createnode();
@@ -77,7 +76,7 @@ int fsp(int node){
 }
 
 void setup() {//You are given a total undirected graph(each node consists of a connection to every other node). Find the shortest path that reaches every node only one time. There are ten nodes and each node contains an integer array of the distances between it and the nth node it connects with. Then the node contains a pointer to a link table containing pointers to each node. Eax points to the first node, put the shortest path into eax when finished.
-	num = 10;
+	num = 5;
 	creategraph();
 	
 	eax = 0x600000;//used as a tmp variable for memcpy

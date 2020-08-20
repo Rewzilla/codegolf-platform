@@ -1,0 +1,50 @@
+Student ID Number Verification
+===============================================================================
+
+
+Thanks/credit to Evan Bolt for this challenge!
+
+DSU is thinking about switching to new student ID scheme.  Under the new
+scheme, student ID\'s would have the following format requirements:
+
+ - Must be either 7, 8, or 9 digits long
+ - Must NOT begin with a 0 (zero)
+ - Must NOT contain two consecutive identical digits (i.e. 9877653 is invalid)
+ - The sum of all the digits must NOT be a multiple of 7 or 11
+
+Your jobs is to write a program that takes a list of ID\'s on stdin and print
+either "valid" or "invalid" for each.  Both the input numbers, and your
+output data should each be newline seperated.
+
+
+Example
+===============================================================================
+
+If your program reads the input:
+
+1111111
+34712346
+25
+891367829
+0458193
+9247281
+
+It should output:
+
+invalid
+valid
+invalid
+valid
+invalid
+invalid
+
+This is because:
+
+1111111    : has consecutive identical digits
+34712346   : follows all the rules
+25         : is too short
+891367829  : follows all the rules
+0458193    : begins with a leading zero
+9247281    : 9+2+4+7+2+8+1 = 33 is a multiple of 11
+
+

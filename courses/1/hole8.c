@@ -57,11 +57,9 @@ void base32encode(){//homemade base32 encode
 	if(tmp < 7)
 		for(int i = 0; i < tmp; i++,j++)
 			final[j] = '=';
-	final[j] = 0;
 }
 
 void setup() {//eax points to a string your job is to base32 encode it and store it in the location pointed to by ebx, then move into eax the strings final location. (standard base32 characters apply A-Z2-7=)
-	srand(time(0));
 
 	int size = rand()%25+25;
 	string1 = malloc(size+1);
@@ -78,6 +76,6 @@ void setup() {//eax points to a string your job is to base32 encode it and store
 bool verify() {
 
 	base32encode();
-	return !strncmp(mem+eax -0x600000, final, strlen(final)+1);
+	return !strncmp(mem+eax -0x600000, final, strlen(final));
 
 }

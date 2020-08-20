@@ -21,7 +21,6 @@ int total;
 int createarray()
 {
 	total = 0;
-	srand(time(0));
 	int number = rand()%400+100;
 	unsigned int *array = malloc(number*4+4);
 	for(int i = 0; i < number; i++){

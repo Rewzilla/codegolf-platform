@@ -52,7 +52,6 @@ void sort(int num){
 
 void createll(){
 	
-	srand(time(0));
 	int num = rand() % 40 + 10;
 	head = createnode();
 	struct design* tmp = head;
@@ -81,7 +80,6 @@ void createll(){
 }
 
 void setup() {//eax points to the first node of a linked list, your job is to sort the linked list however you want. Put the address of the head node back into eax when your done.
-	srand(time(0));
 	eax = 0x700000;
 	createll();
 }

@@ -21,7 +21,6 @@ unsigned char *string1;
 unsigned char *final;
 
 void base64encode(){//homemade base32 encode
-	srand(time(0));
 
 	int size = rand()%25+25;
 	string1 = malloc(size+1);

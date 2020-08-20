@@ -22,7 +22,6 @@ int counts[52];
 
 void createarray(){
 	int counter;
-	srand(time(0));
 	for(int i = 0; i < 52; i++){
 		counter = 0;
 		array[i] = (long long)(rand() + rand())*RAND_MAX + rand() + rand();

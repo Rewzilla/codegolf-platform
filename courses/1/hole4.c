@@ -20,7 +20,6 @@ int lines, words, characters;
 
 void makestring(){
 	
-	srand(time(0));
 	lines = 0;
 	char *wordlist[40] = {"This", "is", "my", "random", "sentence", "generator", "list", "I", "think", "my", "plan", "should", "work", "but", "who", "knows", "anyways", "if", "there", "are", "other", "words", "or", "a", "different", "and", "better", "way", "becomes", "available", "please", "do", "not", "hesitate", "to", "change", "this", "method", "thanks", "extra"};
 	words = rand()%40+20;//20 to 50 words

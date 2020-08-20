@@ -26,11 +26,4 @@ uc_err err;
 void setup();
 bool verify();
 
-#define DEBUG() printf(								\
-		"EAX:%08x EBX:%08x ECX:%08x EDX:%08x\n"		\
-		"ESI:%08x EDI:%08x EBP:%08x ESP:%08x\n",	\
-		eax, ebx, ecx, edx,							\
-		esi, edi, ebp, esp							\
-	);
-
 #endif

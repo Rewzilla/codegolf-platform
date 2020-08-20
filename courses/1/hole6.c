@@ -18,8 +18,6 @@
 extern unsigned int eax, ebx, ecx, edx, esi, edi;
 extern unsigned char mem[0x200000];
 int wincheck;//variable for who one
-int X;
-int O;
 char board[9];
 
 bool checkboard( int x, int y){
@@ -34,12 +32,9 @@ bool checkboard( int x, int y){
 
 void createboard(){
 	
-	srand(time(0));
 	for(int i = 0; i < 9; i++)
 		board[i] = ' ';
 	int x, y;
-	X=0;
-	O=0;
 	for(int i = 0; i < 9; i++){
 		
 		while(1){
@@ -50,11 +45,9 @@ void createboard(){
 		}
 		if(i%2){
 			board[x*3+y] = 'X';
-			X+=x*3+y;
 		}
 		else {
 			board[x*3+y] = 'O';
-			O+=x*3+y;
 		}
 		if(checkboard(x, y)){
 			wincheck = i%2+1; //X = 2, O = 1, Tie = 0
@@ -74,8 +67,10 @@ void setup() {//eax holds a pointer to a tic tac toe game board string, each pla
 
 bool verify() {//check for who wins or tie also check for sum of players
 
-	return eax == wincheck//who won 0 for tie, 1 for o, 2 for x
-		&& ebx == X//sum of indexes of x
-		&& ecx == O;//sum of indexes of o
+	return eax == wincheck;//who won 0 for tie, 1 for o, 2 for x
 
 }
+
+
+
+
