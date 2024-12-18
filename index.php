@@ -26,7 +26,7 @@ if(!isset($_GET["page"]) || !in_array($_GET["page"], $pages)) {
 <html lang="en">
 
 <head>
-	<title>CodeGolf (beta)</title>
+	<title>CodeGolf</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -42,7 +42,7 @@ if(!isset($_GET["page"]) || !in_array($_GET["page"], $pages)) {
 
 	<div class="container">
 
-		<h1>CodeGolf <sup style="color: blue;">(beta)</sup> <img src="/images/logo.png" style="width: 25px;"></h1>
+		<h1>CodeGolf <sup style="color: blue;"></sup> <img src="/images/logo.png" style="width: 25px;"></h1>
 
 		<ul class="nav nav-tabs">
 		<?php
