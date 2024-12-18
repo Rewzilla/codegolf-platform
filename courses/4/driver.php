@@ -7,7 +7,7 @@ include("testcases.php");
 
 function testcase($hole, $code) {
 
-	global $tmp_dir, $testcases;
+	global $tmp_dir, $testcases, $show_output;
 
 	$name = md5($code);
 
