@@ -83,6 +83,12 @@ if(!isset($_GET["course"])) {
 
 	} else {
 
+		$sql = $db->query("SELECT username FROM solves JOIN users on solves.user = users.id WHERE score != 9999 GROUP BY username ORDER BY username;");
+		$users = array();
+		while($user = $sql->fetch_assoc())
+			$users[] = $user;
+		$sql->close();
+
 		$sql = $db->prepare("SELECT id, course, number, description FROM holes WHERE course=? AND number=?;");
 		$sql->bind_param("ii", $_GET["course"], $_GET["hole"]);
 		$sql->execute();
@@ -202,6 +208,110 @@ if(!isset($_GET["course"])) {
 			</div>
 
 		</div>
+
+		<h5>Trends</h5>
+		<div style="margin: auto">
+			<canvas id="canvas"></canvas>
+		</div>
+		<script>
+		var config = {
+			type: 'line',
+			data: {
+				datasets: [
+				<?php foreach ($users as $user) {
+					$username = str_replace("'", "\\'", $user["username"]);
+				?>
+					{
+						label: '<?php echo $username; ?>',
+						<?php
+/*
+						$red = rand(0, 255);
+						$green = rand(0, 255);
+						$blue = rand(0, 255);
+*/
+						$h = md5($username);
+						$red = substr($h, 0, 2);
+						$green = substr($h, 2, 2);
+						$blue = substr($h, 4, 2);
+						echo "backgroundColor: 'rgb(" . $red . ", " . $green . ", " . $blue . ")',\n";
+						echo "borderColor: 'rgb(" . $red . ", " . $green . ", " . $blue . ")',\n";
+						?>
+						data: [
+							<?php
+							$scores = $db->prepare("SELECT at, score FROM solves JOIN users on solves.user = users.id WHERE username=?");
+							$scores->bind_param("s", $username);
+							$scores->execute();
+							$scores->bind_result($time, $score);
+							while ($scores->fetch()) {
+							?>
+							{ x:'<?php echo $time; ?>', y:<?php echo $score; ?> },
+							<?php
+							}
+							$scores->close();
+							?>
+						],
+						fill: false,
+					},
+				<?php } ?>
+				]
+			},
+			options: {
+				responsive: true,
+				layout: {
+					padding: {
+						top:0,
+					}
+				},
+				title: {
+					display: false,
+					text: 'Score Trends',
+					fontSize: 25,
+				},
+				legend: {
+					display: true,
+					position: 'right'
+				},
+				tooltips: {
+					enabled: true,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				elements: {
+					line: {
+						tension: 0
+					}
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						type: 'time',
+						scaleLabel: {
+							display: false,
+							labelString: ''
+						},
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Bytes'
+						},
+						ticks: {
+							maxTicksLimit:20,
+							min:0,
+						}
+					}]
+				}
+			}
+		};
+
+		window.onload = function() {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			window.myLine = new Chart(ctx, config);
+		};
+		</script>
 
 		<?php
 

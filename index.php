@@ -35,6 +35,7 @@ if(!isset($_GET["page"]) || !in_array($_GET["page"], $pages)) {
 	<script src="<?php echo $cdn["jquery_js"]; ?>"></script>
 <!--	<script src="<?php echo $cdn["popper_js"]; ?>"></script> -->
 	<script src="<?php echo $cdn["bootstrap_js"]; ?>"></script>
+	<script src="<?php echo $cdn["chart_js"]; ?>"></script>
 	<link rel="stylesheet" href="/css/default.css" />
 </head>
 
