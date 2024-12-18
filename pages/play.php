@@ -41,7 +41,7 @@ if(!isset($_GET["course"])) {
 
 	$scores = scorecard($_SESSION["username"], $_GET["course"]);
 
-	$par = array();
+	$par = array("n.a");
 	for($i=1; $i<=18; $i++)
 		$par[$i] = par($_GET["course"], $i);
 
