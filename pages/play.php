@@ -39,6 +39,17 @@ if(!isset($_GET["course"])) {
 
 } else {
 
+	?>
+	<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'));
+		tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+			new bootstrap.Tooltip(tooltipTriggerEl);
+		});
+	});
+	</script>
+	<?php
+
 	$scores = scorecard($_SESSION["username"], $_GET["course"]);
 
 	$par = array("n.a");
@@ -66,7 +77,12 @@ if(!isset($_GET["course"])) {
 		</ul>
 		<h5>Scorecard</h5>
 		<table class="table table-bordered table-striped">
-			<tr><th>Hole</th><th>Description</th><th>Par</th><th>My Best</th></tr>
+			<tr>
+				<th>Hole</th>
+				<th>Description</th>
+				<th>Par <sup class="text-primary" data-toggle="tooltip" title="Calculated as the average of all submissions."><i class="fas fa-question-circle"></i></sup></th>
+				<th>My Best</th>
+			</tr>
 			<?php while($sql->fetch()) { ?>
 				<tr>
 					<td><a href="/play/<?php echo $course; ?>/<?php echo $number; ?>">Hole <?php echo $number; ?> </a></td>
@@ -161,7 +177,7 @@ if(!isset($_GET["course"])) {
 				<h5>Code</h5>
 				<form action="/play/<?php echo $course; ?>/<?php echo $number; ?>" method="POST" onsubmit="document.getElementById('code').value = editor.getValue()">
 					<div class="form-group">
-						<div class="card card-body editor" id="editor" style="position: relative; height: 400px; width: 100%;"></div>
+						<div class="card card-body editor" id="editor" style="position: relative; height: 400px;"></div>
 						<input type="hidden" id="code" name="code" value="">
 					</div>
 					<div class="row">
@@ -172,10 +188,14 @@ if(!isset($_GET["course"])) {
 					<script>
 						var editor = ace.edit("editor");
 						editor.setTheme("ace/theme/textmate");
-						editor.session.setOptions({
+						editor.setOptions({
 							mode: "ace/mode/<?php echo $syntax; ?>",
 							useSoftTabs: false,
 							newLineMode: "unix",
+							fontSize: 16,
+							printMargin: false,
+							wrap: true,
+							indentedSoftWrap: false,
 						});
 						editor.on("change", function(e, inst) {
 							var len = inst.session.getValue().length;
@@ -183,6 +203,7 @@ if(!isset($_GET["course"])) {
 						});
 						<?php if(isset($_POST["submit"])) { ?>
 						editor.setValue(atob("<?php echo base64_encode($_POST["code"]); ?>"));
+						setTimeout(() => { editor.resize(true); }, 100);
 						<?php } ?>
 					</script>
 				</form>
@@ -194,7 +215,7 @@ if(!isset($_GET["course"])) {
 					<?php echo $description; ?>
 				</div>
 				<br>
-				<h5>Par <kbd><?php echo par($course, $number); ?></kbd></h5><br>
+				<h5>Par <kbd><?php echo par($course, $number); ?></kbd> <sup class="text-primary" data-toggle="tooltip" title="Calculated as the average of all submissions."><i class="fas fa-question-circle"></i></sup> </h5><br>
 				<br>
 			</div>
 
