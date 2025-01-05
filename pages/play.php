@@ -101,17 +101,20 @@ if(!isset($_GET["course"])) {
 
 		$userid = get_userid();
 
-		$sql = $db->query("SELECT username FROM solves JOIN users on solves.user = users.id WHERE score != 9999 GROUP BY username ORDER BY username;");
-		$users = array();
-		while($user = $sql->fetch_assoc())
-			$users[] = $user;
-		$sql->close();
-
 		$sql = $db->prepare("SELECT id, course, number, description FROM holes WHERE course=? AND number=?;");
 		$sql->bind_param("ii", $_GET["course"], $_GET["hole"]);
 		$sql->execute();
 		$sql->bind_result($id, $course, $number, $description);
 		$sql->fetch();
+		$sql->close();
+
+		$sql = $db->prepare("SELECT username FROM solves JOIN users on solves.user = users.id AND course=? AND hole=? WHERE score != 9999 GROUP BY username ORDER BY username;");
+		$sql->bind_param("ii", $course, $number);
+		$sql->bind_result($username);
+		$sql->execute();
+		$users = array();
+		while($sql->fetch())
+			$users[] = $username;
 		$sql->close();
 
 		?>
@@ -273,7 +276,8 @@ if(!isset($_GET["course"])) {
 					data: {
 						datasets: [
 						<?php foreach ($users as $user) {
-							$username = str_replace("'", "\\'", $user["username"]);
+//							$username = str_replace("'", "\\'", $user["username"]);
+							$username = str_replace("'", "\\'", $username);
 						?>
 							{
 								label: '<?php echo $username; ?>',

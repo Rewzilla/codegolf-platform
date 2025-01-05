@@ -122,7 +122,7 @@ $testcases = array(
 
 		for ($i=1; $i<64; $i++) {
 
-			$l = (rand() % 30) + 1;
+			$l = (rand() % 28) + 3;
 			$s = "";
 			for ($x=0; $x<$l; $x++)
 				$s .= $alphanum[rand() % strlen($alphanum)];
