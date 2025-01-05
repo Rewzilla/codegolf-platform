@@ -131,9 +131,16 @@ if(!isset($_GET["course"])) {
 
 			include("courses/" . $course . "/driver.php");
 
-			$ret = testcase($number, str_replace("\r\n", "\n", $_POST["code"]));
+			$pass = true;
+			for ($r=0; $r<$test_iters; $r++) {
+				$ret = testcase($number, str_replace("\r\n", "\n", $_POST["code"]));
+				if ($ret === false || !$ret["valid"]) {
+					$pass = false;
+					break;
+				}
+			}
 
-			if($ret !== false && $ret["valid"]) {
+			if($pass) {
 
 				$sql = $db->prepare("INSERT INTO solves (user, course, hole, score) VALUES (?, ?, ?, ?);");
 				$sql->bind_param("iiii", $userid, $course, $number, $ret["size"]);
