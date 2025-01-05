@@ -20,6 +20,7 @@ function testcase($hole, $code) {
 	$output = shell_exec(
 		"gcc -std=c99 -w -o " . $e_file . " -lseccomp " . $seccomp . " " . $c_file . " 2>&1 " .
 		"|grep -v '.o: In function'" .
+		"|grep -v '.o: in function'" .
 		"|grep -v 'function is dangerous and should not be used'"
 	);
 
@@ -67,7 +68,7 @@ function testcase($hole, $code) {
 		} else {
 			$output = "";
 			$ret = "pass";
-			$size = filesize($c_file) - 1;
+			$size = filesize($c_file);
 		}
 
 	}

@@ -9,7 +9,7 @@ $testcases = array(
 
 	"1" => function() {
 
-		return array("input" => "", "output" => "Hello World!");
+		return array("input" => "", "output" => "Hello World!\n");
 
 	},
 
@@ -19,6 +19,8 @@ $testcases = array(
 
 		for ($x=0; $x<50; $x++)
 			$string .= rand() % 256;
+
+		$string .= "\n";
 
 		return array("input" => $string, "output" => $string);
 

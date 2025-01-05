@@ -108,7 +108,7 @@ if(!isset($_GET["course"])) {
 
 			include("courses/" . $course . "/driver.php");
 
-			$ret = testcase($number, $_POST["code"]);
+			$ret = testcase($number, str_replace("\r\n", "\n", $_POST["code"]));
 
 			if($ret !== false && $ret["valid"]) {
 
@@ -162,16 +162,29 @@ if(!isset($_GET["course"])) {
 				<form action="/play/<?php echo $course; ?>/<?php echo $number; ?>" method="POST" onsubmit="document.getElementById('code').value = editor.getValue()">
 					<div class="form-group">
 						<div class="card card-body editor" id="editor" style="position: relative; height: 400px; width: 100%;"></div>
-						<script src="<?php echo $cdn["ace_js"]; ?>" type="text/javascript" charset="utf-8"></script>
-						<script>
-							var editor = ace.edit("editor");
-							editor.setTheme("ace/theme/textmate");
-							editor.getSession().setMode("ace/mode/<?php echo $syntax; ?>");
-							<?php if(isset($_POST["submit"])) { ?>editor.setValue(atob("<?php echo base64_encode($_POST["code"]); ?>"));<?php } ?>
-						</script>
 						<input type="hidden" id="code" name="code" value="">
 					</div>
-					<input type="submit" class="btn btn-primary" name="submit" value="Run">
+					<div class="row">
+						<div class="col"><input type="submit" class="btn btn-primary" name="submit" value="Run"></div>
+						<div class="col"><span class="float-right">Current size: <kbd id="codesize">0</kbd></span></div>
+					</div>
+					<script src="<?php echo $cdn["ace_js"]; ?>" type="text/javascript" charset="utf-8"></script>
+					<script>
+						var editor = ace.edit("editor");
+						editor.setTheme("ace/theme/textmate");
+						editor.session.setOptions({
+							mode: "ace/mode/<?php echo $syntax; ?>",
+							useSoftTabs: false,
+							newLineMode: "unix",
+						});
+						editor.on("change", function(e, inst) {
+							var len = inst.session.getValue().length;
+							document.getElementById("codesize").innerHTML = len;
+						});
+						<?php if(isset($_POST["submit"])) { ?>
+						editor.setValue(atob("<?php echo base64_encode($_POST["code"]); ?>"));
+						<?php } ?>
+					</script>
 				</form>
 			</div>
 
@@ -181,7 +194,7 @@ if(!isset($_GET["course"])) {
 					<?php echo $description; ?>
 				</div>
 				<br>
-				<h5>Par <kbd><?php echo par($course, $number); ?></kbd></h5>
+				<h5>Par <kbd><?php echo par($course, $number); ?></kbd></h5><br>
 				<br>
 			</div>
 
@@ -209,109 +222,116 @@ if(!isset($_GET["course"])) {
 
 		</div>
 
-		<h5>Trends</h5>
-		<div style="margin: auto">
-			<canvas id="canvas"></canvas>
-		</div>
-		<script>
-		var config = {
-			type: 'line',
-			data: {
-				datasets: [
-				<?php foreach ($users as $user) {
-					$username = str_replace("'", "\\'", $user["username"]);
-				?>
-					{
-						label: '<?php echo $username; ?>',
-						<?php
-/*
-						$red = rand(0, 255);
-						$green = rand(0, 255);
-						$blue = rand(0, 255);
-*/
-						$h = md5($username);
-						$red = substr($h, 0, 2);
-						$green = substr($h, 2, 2);
-						$blue = substr($h, 4, 2);
-						echo "backgroundColor: 'rgb(" . $red . ", " . $green . ", " . $blue . ")',\n";
-						echo "borderColor: 'rgb(" . $red . ", " . $green . ", " . $blue . ")',\n";
-						?>
-						data: [
-							<?php
-							$scores = $db->prepare("SELECT at, score FROM solves JOIN users on solves.user = users.id WHERE username=?");
-							$scores->bind_param("s", $username);
-							$scores->execute();
-							$scores->bind_result($time, $score);
-							while ($scores->fetch()) {
-							?>
-							{ x:'<?php echo $time; ?>', y:<?php echo $score; ?> },
-							<?php
-							}
-							$scores->close();
-							?>
-						],
-						fill: false,
-					},
-				<?php } ?>
-				]
-			},
-			options: {
-				responsive: true,
-				layout: {
-					padding: {
-						top:0,
-					}
-				},
-				title: {
-					display: false,
-					text: 'Score Trends',
-					fontSize: 25,
-				},
-				legend: {
-					display: true,
-					position: 'right'
-				},
-				tooltips: {
-					enabled: true,
-				},
-				hover: {
-					mode: 'nearest',
-					intersect: true
-				},
-				elements: {
-					line: {
-						tension: 0
-					}
-				},
-				scales: {
-					xAxes: [{
-						display: true,
-						type: 'time',
-						scaleLabel: {
-							display: false,
-							labelString: ''
-						},
-					}],
-					yAxes: [{
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: 'Bytes'
-						},
-						ticks: {
-							maxTicksLimit:20,
-							min:0,
-						}
-					}]
-				}
-			}
-		};
+		<div class="row">
 
-		window.onload = function() {
-			var ctx = document.getElementById('canvas').getContext('2d');
-			window.myLine = new Chart(ctx, config);
-		};
-		</script>
+			<div class="col-lg">
+				<h5>Trends</h5>
+				<div style="margin: auto">
+					<canvas id="canvas"></canvas>
+				</div>
+				<script>
+				var config = {
+					type: 'line',
+					data: {
+						datasets: [
+						<?php foreach ($users as $user) {
+							$username = str_replace("'", "\\'", $user["username"]);
+						?>
+							{
+								label: '<?php echo $username; ?>',
+								<?php
+/*
+								$red = rand(0, 255);
+								$green = rand(0, 255);
+								$blue = rand(0, 255);
+*/
+								$h = md5($username);
+								$red = hexdec(substr($h, 0, 2));
+								$green = hexdec(substr($h, 2, 2));
+								$blue = hexdec(substr($h, 4, 2));
+								echo "backgroundColor: 'rgb(" . $red . ", " . $green . ", " . $blue . ")',\n";
+								echo "borderColor: 'rgb(" . $red . ", " . $green . ", " . $blue . ")',\n";
+								?>
+								data: [
+									<?php
+									$scores = $db->prepare("SELECT at, score FROM solves JOIN users on solves.user = users.id WHERE username=? AND hole=? AND course=?");
+									$scores->bind_param("sii", $username, $number, $course);
+									$scores->execute();
+									$scores->bind_result($time, $score);
+									while ($scores->fetch()) {
+									?>
+									{ x:'<?php echo $time; ?>', y:<?php echo $score; ?> },
+									<?php
+									}
+									$scores->close();
+									?>
+								],
+								fill: false,
+							},
+						<?php } ?>
+						]
+					},
+					options: {
+						responsive: true,
+						layout: {
+							padding: {
+								top:0,
+							}
+						},
+						title: {
+							display: false,
+							text: 'Score Trends',
+							fontSize: 25,
+						},
+						legend: {
+							display: true,
+							position: 'right'
+						},
+						tooltips: {
+							enabled: true,
+						},
+						hover: {
+							mode: 'nearest',
+							intersect: true
+						},
+						elements: {
+							line: {
+								tension: 0
+							}
+						},
+						scales: {
+							xAxes: [{
+								display: true,
+								type: 'time',
+								scaleLabel: {
+									display: false,
+									labelString: ''
+								},
+							}],
+							yAxes: [{
+								display: true,
+								scaleLabel: {
+									display: true,
+									labelString: 'Bytes'
+								},
+								ticks: {
+									maxTicksLimit:20,
+									min:0,
+								}
+							}]
+						}
+					}
+				};
+
+				window.onload = function() {
+					var ctx = document.getElementById('canvas').getContext('2d');
+					window.myLine = new Chart(ctx, config);
+				};
+				</script>
+
+			</div>
+
+		</div>
 
 		<?php
 
