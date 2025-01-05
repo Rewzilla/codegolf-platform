@@ -40,7 +40,8 @@ function testcase($hole, $code) {
 			2 => array("pipe", "w"),
 		);
 
-		$run = proc_open(dirname(__FILE__) . "/runner " . $e_file, $descspec, $pipes, $tmp_dir);
+//		$run = proc_open(dirname(__FILE__) . "/runner " . $e_file, $descspec, $pipes, $tmp_dir);
+		$run = proc_open("/usr/local/bin/runner " . $e_file, $descspec, $pipes, $tmp_dir);
 
 		fwrite($pipes[0], $io["input"]);
 		fclose($pipes[0]);
@@ -60,7 +61,7 @@ function testcase($hole, $code) {
 			$size = "inf";
 		} else if($result != $io["output"]) {
 			if ($show_output)
-				$output = "Incorrect solution.\n\nYour code output was:\n" . $result;
+				$output = "Input was:\n" . $io["input"] . "\n\nYour code output:\n" . $result . "\n\nBut I expected:\n" . $io["output"];
 			else
 				$output = "Incorrect solution.";
 			$ret = "fail";

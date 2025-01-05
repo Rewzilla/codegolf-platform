@@ -76,6 +76,41 @@ $testcases = array(
 
 	"4" => function() {
 
+		$m = array(array(), array(), array(), array());
+
+		for ($r=0; $r<4; $r++) {
+			for ($c=0; $c<4; $c++) {
+				$m[$r][$c] = rand() % 1024;
+			}
+		}
+
+		$d = "RC"[rand() % 2];
+		$n = rand() % 4;
+		$t = 0;
+
+		if ($d == "R")
+			for ($i=0; $i<4; $i++)
+				$t += $m[$n][$i];
+		else if ($d == "C")
+			for ($i=0; $i<4; $i++)
+				$t += $m[$i][$n];
+
+		$input = "";
+		for ($r=0; $r<4; $r++) {
+			for ($c=0; $c<4; $c++) {
+				$input .= (string)$m[$r][$c];
+				if ($c < 3)
+					$input .= " ";
+				else
+					$input .= "\n";
+			}
+		}
+		$input .= $d . (string)$n . "\n";
+
+		$output = (string)$t . "\n";
+
+		return array("input" => $input, "output" => $output);
+
 	},
 
 	"5" => function() {

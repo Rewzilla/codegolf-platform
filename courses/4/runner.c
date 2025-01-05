@@ -5,11 +5,11 @@
 #define SU_UID 65534
 #define SU_GID 65534
 
-#define TIMEOUT "3"
+#define TIMEOUT "10"
 
 int main(int argc, char *argv[]) {
 
-	chroot(getenv("PWD"));
+//	chroot(getenv("PWD"));
 
 	setgroups(0, 0);
 
