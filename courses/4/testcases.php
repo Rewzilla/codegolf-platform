@@ -115,6 +115,41 @@ $testcases = array(
 
 	"5" => function() {
 
+		global $alphanum;
+
+		$input = "";
+		$output = "";
+
+		for ($i=1; $i<64; $i++) {
+
+			$l = (rand() % 30) + 1;
+			$s = "";
+			for ($x=0; $x<$l; $x++)
+				$s .= $alphanum[rand() % strlen($alphanum)];
+
+			switch (rand() % 4) {
+				case 0:
+					$s .= strrev($s);
+					$output .= "yes:" . strlen($s) . "\n";
+					break;
+				case 1:
+					$s = $s . $alphanum[rand() % strlen($alphanum)] . strrev($s);
+					$output .= "yes:" . strlen($s) . "\n";
+					break;
+				case 2:
+				case 3:
+					for ($x=0; $x<$l; $x++)
+						$s .= $alphanum[rand() % strlen($alphanum)];
+					$output .= "no:" . strlen($s) . "\n";
+					break;
+			}
+
+			$input .= $s . "\n";
+
+		}
+
+		return array("input" => $input, "output" => $output);
+
 	},
 
 	"6" => function() {
