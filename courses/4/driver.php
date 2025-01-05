@@ -60,7 +60,7 @@ function testcase($hole, $code) {
 			$size = "inf";
 		} else if($result != $io["output"]) {
 			if ($show_output)
-				$output = "Incorrect solution.\n\nYour code output was:\n" . $io["output"];
+				$output = "Incorrect solution.\n\nYour code output was:\n" . $result;
 			else
 				$output = "Incorrect solution.";
 			$ret = "fail";

@@ -99,6 +99,8 @@ if(!isset($_GET["course"])) {
 
 	} else {
 
+		$userid = get_userid();
+
 		$sql = $db->query("SELECT username FROM solves JOIN users on solves.user = users.id WHERE score != 9999 GROUP BY username ORDER BY username;");
 		$users = array();
 		while($user = $sql->fetch_assoc())
@@ -122,13 +124,16 @@ if(!isset($_GET["course"])) {
 		<?php
 		if(isset($_POST["submit"])) {
 
+			$sql = $db->prepare("REPLACE INTO code (user, course, hole, code) VALUES (?, ?, ?, ?);");
+			$sql->bind_param("iiis", $userid, $course, $number, $_POST["code"]);
+			$sql->execute();
+			$sql->close();
+
 			include("courses/" . $course . "/driver.php");
 
 			$ret = testcase($number, str_replace("\r\n", "\n", $_POST["code"]));
 
 			if($ret !== false && $ret["valid"]) {
-
-				$userid = get_userid();
 
 				$sql = $db->prepare("INSERT INTO solves (user, course, hole, score) VALUES (?, ?, ?, ?);");
 				$sql->bind_param("iiii", $userid, $course, $number, $ret["size"]);
@@ -168,10 +173,17 @@ if(!isset($_GET["course"])) {
 			<?php
 
 		}
+
+		$sql = $db->prepare("SELECT code FROM code WHERE user=? AND course=? AND hole=?;");
+		$sql->bind_param("iii", $userid, $course, $number);
+		$sql->execute();
+		$sql->bind_result($code);
+		$sql->fetch();
+		$sql->close();
+
 		?>
 
 		<div class="row">
-
 
 			<div class="col-lg">
 				<h5>Code</h5>
@@ -201,10 +213,8 @@ if(!isset($_GET["course"])) {
 							var len = inst.session.getValue().length;
 							document.getElementById("codesize").innerHTML = len;
 						});
-						<?php if(isset($_POST["submit"])) { ?>
-						editor.setValue(atob("<?php echo base64_encode($_POST["code"]); ?>"));
+						editor.setValue(atob("<?php echo base64_encode($code); ?>"));
 						setTimeout(() => { editor.resize(true); }, 100);
-						<?php } ?>
 					</script>
 				</form>
 			</div>
