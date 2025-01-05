@@ -1,8 +1,8 @@
--- MySQL dump 10.16  Distrib 10.1.26-MariaDB, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.19  Distrib 10.3.39-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: codegolf
 -- ------------------------------------------------------
--- Server version	10.1.26-MariaDB-0+deb9u1
+-- Server version	10.3.39-MariaDB-0+deb10u2
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,6 +16,39 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `challenges`
+--
+
+DROP TABLE IF EXISTS `challenges`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `challenges` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hole` int(11) NOT NULL,
+  `user` int(11) NOT NULL,
+  `value` int(11) NOT NULL,
+  `course` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `code`
+--
+
+DROP TABLE IF EXISTS `code`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `code` (
+  `user` int(11) NOT NULL,
+  `course` int(11) NOT NULL,
+  `hole` int(11) NOT NULL,
+  `code` mediumtext DEFAULT NULL,
+  PRIMARY KEY (`user`,`course`,`hole`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `courses`
 --
 
@@ -25,11 +58,11 @@ DROP TABLE IF EXISTS `courses`;
 CREATE TABLE `courses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `language` varchar(255) DEFAULT NULL,
-  `description` text,
+  `description` text DEFAULT NULL,
   `image` varchar(64) DEFAULT NULL,
-  `syntax` varchar(32) DEFAULT NULL,
+  `syntax` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,9 +76,9 @@ CREATE TABLE `holes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `course` int(11) DEFAULT NULL,
   `number` int(11) DEFAULT NULL,
-  `description` text,
+  `description` text DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -58,10 +91,10 @@ DROP TABLE IF EXISTS `news`;
 CREATE TABLE `news` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(256) DEFAULT NULL,
-  `body` text,
-  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `body` text DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,10 +109,10 @@ CREATE TABLE `solves` (
   `hole` int(11) DEFAULT NULL,
   `user` int(11) DEFAULT NULL,
   `score` int(11) DEFAULT NULL,
-  `at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `course` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=592 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=515 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +128,7 @@ CREATE TABLE `users` (
   `password` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -107,4 +140,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-18 16:17:40
+-- Dump completed on 2025-01-04 20:46:15
